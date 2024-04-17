@@ -19,9 +19,10 @@ try {
       error: { code: 401, msg: 'User not authenticated.' },
     });
   }
-  res
-    .status(200)
-    .send(user);
+    res
+      .status(200)
+      .send(user);
+  
 } catch (error) {
   console.error(err);
   res.status(500).send()

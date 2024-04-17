@@ -7,13 +7,11 @@ import Tasks from './components/tasks';
 
 function App() {
   const [page,setPage] = useState('home')
-  const [user, setUser] = useState({
-    name: ''
-  });
+  const [user, setUser] = useState(null);
   return (
     <>
       {
-        (user.name === '') ?
+        (user === null) ?
           <LoginPage setUser={setUser} />
           :
           <div className='flex'>

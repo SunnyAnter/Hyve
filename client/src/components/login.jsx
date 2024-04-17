@@ -17,8 +17,63 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
+import apiService from "@/services/apiServices";
+
+const register = {
+  email: '',
+  password: '',
+  name: '',
+  lastName: '',
+};
+const login = {
+  email: '',
+  password: ''
+}
 
 export function LoginPage({ setUser }) {
+  const [registerState, setRegisterState] = useState(register);
+  const [loginState, setLoginState] = useState(login);
+
+  const handleRegisterChange = (e) => {
+    e.preventDefault();
+    const { name, value } = e.target;
+    console.log(name, value, registerState)
+    setRegisterState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+  const handleLoginChange = (e) => {
+    const { name, value } = e.target;
+    setLoginState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit= async(isReg) => {
+    if (isReg) {
+      const user = await apiService.register(registerState);
+      if (user !== undefined) {
+        setUser({
+          id: user._id,
+          name: user.name,
+          lastName: user.lastName,
+          email: user.email,
+        })
+      }
+    } else {
+      const user = await apiService.login(loginState);
+      if (user !== undefined) {
+        setUser({
+          id: user._id,
+          name: user.name,
+          lastName: user.lastName,
+          email: user.email,
+        })
+      }
+    }
+  };
   
   return (
     <>
@@ -39,24 +94,24 @@ export function LoginPage({ setUser }) {
           </CardHeader>
           <CardContent className="space-y-2">
             <div className="space-y-1">
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" name="firstName"type="text"/>
+              <Label htmlFor="firstName">Name</Label>
+                  <Input id="firstName" name="name" type="text" value={registerState.name} onChange={handleRegisterChange} />
                 </div>
                 <div className="space-y-1">
                   <Label htmlFor="lastName">Last Name</Label>
-                  <Input id="lastName" name="lastName" type="text"/>
+                  <Input id="lastName" name="lastName" type="text" value={registerState.lastName} onChange={handleRegisterChange} />
                 </div>
             <div className="space-y-1">
               <Label htmlFor="e-mail">E-mail</Label>
-              <Input id="e-mail" name="email" type="email"/>
+                  <Input id="e-mail" name="email" type="email" value={registerState.email} onChange={handleRegisterChange} />
             </div>
             <div className="space-y-1">
               <Label htmlFor="new">Password</Label>
-              <Input id="new" name="password"type="password" />
+                  <Input id="new" name="password" type="password" value={registerState.password} onChange={handleRegisterChange} />
             </div>
           </CardContent>
           <CardFooter>
-            <Button className="bg-orange-500 hover:bg-orange-600">Save changes</Button>
+                <Button className="bg-orange-500 hover:bg-orange-600" onClick={() => handleSubmit(true)}>Save changes</Button>
           </CardFooter>
         </Card>
       </TabsContent>
@@ -71,15 +126,15 @@ export function LoginPage({ setUser }) {
           <CardContent className="space-y-2">
             <div className="space-y-1">
               <Label htmlFor="e-mail">E-mail</Label>
-              <Input id="e-mail" name="email" type="email" />
+                  <Input id="e-mail" name="email" type="email" value={loginState.email} onChange={handleLoginChange} />
             </div>
             <div className="space-y-1">
               <Label htmlFor="current">Password</Label>
-                  <Input id="current" name="password" type="password"/>
+                  <Input id="current" name="password" type="password" value={loginState.password} onChange={handleLoginChange} />
             </div>
           </CardContent>
           <CardFooter>
-                <Button className="bg-orange-500 hover:bg-orange-600" onClick={()=>setUser('sunny')}>Login</Button>
+                <Button className="bg-orange-500 hover:bg-orange-600" onClick={()=>handleSubmit(false)}>Login</Button>
           </CardFooter>
         </Card>
       </TabsContent>
