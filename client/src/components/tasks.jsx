@@ -8,7 +8,7 @@ import { Button } from "./ui/button"
 import {
   Card
 } from "@/components/ui/card"
-import { CirclePlus, ListFilter } from 'lucide-react';
+import { CirclePlus, ListFilter, CircleUser } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -106,22 +106,22 @@ function Tasks() {
             </Card>
           </TabsContent>
           <TabsContent value="start">
-            <Card className="w-[980px] h-[500px] flex flex-col gap-3 justify-start items-center pt-4">
+            <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4">
               <h1>start</h1>
             </Card>
           </TabsContent>
           <TabsContent value="progress">
-            <Card className="w-[980px] h-[500px] flex flex-col gap-3 justify-start items-center pt-4">
+            <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4">
               <h1>progress</h1>
             </Card>
           </TabsContent>
           <TabsContent value="completed">
-            <Card className="w-[980px] h-[500px] flex flex-col gap-3 justify-start items-center pt-4">
+            <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4">
               <h1>completed</h1>
             </Card>
           </TabsContent>
           <TabsContent value="overdue">
-            <Card className="w-[980px] h-[500px] flex flex-col gap-3 justify-start items-center pt-4">
+            <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4">
               <h1>overdue</h1>
             </Card>
           </TabsContent>
