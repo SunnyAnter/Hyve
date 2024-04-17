@@ -1,0 +1,30 @@
+import './App.css'
+import LoginPage from './components/login';
+import Dashboard from './components/dash';
+import { useState } from 'react'
+import Home from './components/home';
+import Tasks from './components/tasks';
+
+function App() {
+  const [page,setPage] = useState('home')
+  const [user, setUser] = useState({
+    name: ''
+  });
+  return (
+    <>
+      {
+        (user.name === '') ?
+          <LoginPage setUser={setUser} />
+          :
+          <div className='flex'>
+            <Dashboard setPage={setPage} />
+            {
+              (page === 'home') ? <Home/> : <Tasks />
+            }
+          </div>
+      }
+    </>
+  )
+}
+
+export default App
