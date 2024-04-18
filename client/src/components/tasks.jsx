@@ -69,7 +69,7 @@ function Tasks({ user }) {
     const today = Date.now();
     const UserIds = assignees.map((user) => user._id)
     UserIds.push(user.id);
-    if (title.length === 0 || !date || assignees.length === 0){
+    if (title.length === 0 || !date || UserIds.length ===0){
       toast({
         title: "Uh oh! Something went wrong.",
         description: "Please fill missing fields"
@@ -264,27 +264,27 @@ function Tasks({ user }) {
           </div>
           <TabsContent value="all">
             <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
-              {tasks.map((task) => <Task task={task} />) } 
+              {tasks.map((task) => <Task task={task}/>) } 
             </Card>
           </TabsContent>
           <TabsContent value="start">
             <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
-              <h1>start</h1>
+              {tasks.filter(task=>task.progress===0).map((task) => <Task task={task} />)} 
             </Card>
           </TabsContent>
           <TabsContent value="progress">
             <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
-              <h1>progress</h1>
+              {tasks.filter(task => task.progress === 1).map((task) => <Task task={task} />)} 
             </Card>
           </TabsContent>
           <TabsContent value="completed">
             <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
-              <h1>completed</h1>
+              {tasks.filter(task => task.progress === 2).map((task) => <Task task={task} />)} 
             </Card>
           </TabsContent>
           <TabsContent value="overdue">
             <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
-              <h1>overdue</h1>
+              {tasks.filter(task => task.progress === 3).map((task) => <Task task={task} />)} 
             </Card>
           </TabsContent>
         </Tabs>

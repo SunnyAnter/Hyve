@@ -7,6 +7,8 @@ router.post('/login', userControllers.login);
 router.post('/register', userControllers.register);
 router.get('/users', userControllers.getUsers);
 router.get('/task/:id', taskControllers.getTasks);
+router.put('/task/:id/complete', taskControllers.updateProgressComp);
+router.put('/task/:id/inpro', taskControllers.updateProgressInpro);
 router.post('/task', taskControllers.createTask);
 
 module.exports = router
