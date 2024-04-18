@@ -8,7 +8,7 @@ import { Button } from "./ui/button"
 import {
   Card
 } from "@/components/ui/card"
-import { CirclePlus, ListFilter, CircleUser } from 'lucide-react';
+import { CirclePlus, ListFilter} from 'lucide-react';
 import {
   Dialog,
   DialogContent,
