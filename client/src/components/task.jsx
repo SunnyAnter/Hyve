@@ -1,4 +1,3 @@
-import { CalendarIcon } from "@radix-ui/react-icons"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Check, Trash2, ScrollText,Scroll,CirclePlay, CircleStop} from 'lucide-react';
@@ -33,6 +32,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { useState } from "react";
+import Log from "./log";
 function Task({ task, handleProgress, handleDelete }) {
   const [timer, setTimer] = useState(true);
   const progress = task.progress;
@@ -79,8 +79,12 @@ function Task({ task, handleProgress, handleDelete }) {
                 You can track the progress of your task in this segment.
               </SheetDescription>
             </SheetHeader>
-            <div className="h-full w-full mt-6 border-2 rounded-md border-slate-400">
-             
+            <div className="h-[670px] flex flex-col w-full mt-4 rounded-md pt-4 pl-4 pr-4 pb-4 overflow-scroll gap-4 scrollbar-none">
+                <Log />
+                <Log />
+                <Log />
+                <Log />
+                <Log />
             </div>
           </SheetContent>
           </Sheet>
