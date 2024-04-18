@@ -11,13 +11,13 @@ function App() {
   return (
     <>
       {
-        (!user === null) ?
+        (user === null) ?
           <LoginPage setUser={setUser} />
           :
           <div className='flex'>
             <Dashboard setPage={setPage} />
             {
-              (page === 'home') ? <Home/> : <Tasks />
+              (page === 'home') ? <Home /> : <Tasks user={user} />
             }
           </div>
       }

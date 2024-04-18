@@ -8,7 +8,7 @@ import { Button } from "./ui/button"
 import {
   Card
 } from "@/components/ui/card"
-import { CirclePlus, ListFilter, LucideScissorsSquareDashedBottom} from 'lucide-react';
+import { CirclePlus, ListFilter} from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -30,7 +30,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { CalendarIcon,CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
+import { CalendarIcon,CaretSortIcon} from "@radix-ui/react-icons"
 import moment from "moment";
 
 import { cn } from "@/lib/utils"
@@ -40,7 +40,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Command,
   CommandEmpty,
@@ -50,6 +50,10 @@ import {
   CommandItem,
   CommandSeparator,
 } from "@/components/ui/command";
+import apiService from "@/services/apiServices";
+import { useToast } from "./ui/use-toast";
+import { useInput } from "react-day-picker";
+import { Toaster } from "./ui/toaster";
 
 const init = [
   {
@@ -74,7 +78,8 @@ const init = [
   }
 ]
 
-function Tasks() {
+function Tasks({user}) {
+  const { toast } = useToast();
   const [users, setUsers] = useState(init);
   const [assignees, setAssignees] = useState([]);
   const [date, setDate] = useState();
@@ -83,6 +88,44 @@ function Tasks() {
   const handleChange = (e) => {
     setTitle(e.target.value)
   }
+  const handleNewTask = async () => {
+    const today = Date.now();
+    const UserIds = assignees.map((user) => user._id)
+    if (title.length === 0 || !date || assignees.length === 0){
+      toast({
+        title: "Uh oh! Something went wrong.",
+        description: "Please fill missing fields"
+      })
+      return
+    }
+    if (Date.parse(date) < today) {
+      toast({
+        title: "Uh oh! Something went wrong.",
+        description: "Due date can't be in the past"
+      })
+      return
+    }
+    const newTask = {
+      title,
+      due_date: Date.parse(date),
+      progress: 0,
+      assignees: UserIds
+    };
+    // const task = await apiService.createTask(newTask);
+    setUsers([...assignees, ...users]);
+    setDate();
+    setTitle('');
+    setAssignees([]);
+    console.log(newTask);
+  }
+  useEffect(() => {
+    const fetch = async () => {
+      const users = await apiService.getUsers();
+      const filteredUsers = users.filter((x)=> x._id !== user.id)
+      setUsers(filteredUsers)
+    }
+    fetch();
+  }, [])
   return (
     <>
       <div className='flex flex-col w-screen gap-7 justify-center items-center'>
@@ -167,7 +210,20 @@ function Tasks() {
                               aria-expanded={open}
                               className="w-full justify-between"
                             >
-                              <span>Select user...</span>
+                              {assignees.length > 0 ? 
+                                <span className="flex">{
+                                  assignees.slice(0, 3).map((x, i) => {
+                                    return (
+                                      (i === 2 && assignees.length > 3) ? <p key={i}>{x.name}&nbsp;...</p> :
+                                        (i === 0 && assignees.length > 1) ? <p key={i}>{x.name},&nbsp;</p> :
+                                          (i === 1 && assignees.length > 2) ? <p key={i}>{x.name},&nbsp;</p> :
+                                            <p key={i}>{x.name}</p>
+                                    );
+                                  })}
+                                  {assignees.length <= 3 && assignees.map((x, i) => i >= 3 && <p key={i}>{x.name}</p>)}
+                                </span>
+                              :<span>Select users...</span>
+                              }
                               <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                             </Button>
                           </PopoverTrigger>
@@ -180,16 +236,16 @@ function Tasks() {
                                   {assignees.length>0 ?
                                     assignees.map((user) => (
                                   <CommandItem
-                                    key={user.value}
-                                    value={user.value}
+                                    key={user.name}
+                                    value={user.name}
                                     onSelect={() => {      
                                       setUsers([...users,user])     
                                       setAssignees((prev) => {
-                                       return  prev.filter(filteredUser => filteredUser.value !== user.value)
+                                       return  prev.filter(filteredUser => filteredUser.name !== user.name)
                                       })
                                     }}                      
                                   >
-                                    {user.label}
+                                    {user.name}
                                   </CommandItem>
                                     )): <></>}
                                 </CommandList>
@@ -199,16 +255,16 @@ function Tasks() {
                                 <CommandList>
                                 {users.map((user) => (
                                   <CommandItem
-                                    key={user.value}
-                                    value={user.value}
+                                    key={user.name}
+                                    value={user.name}
                                     onSelect={() => {
                                       setAssignees([...assignees, user])                                   
                                       setUsers((prev) => {
-                                        return prev.filter(users => users.value !== user.value)
+                                        return prev.filter(users => users.name !== user.name)
                                       })                                    
                                     }}                      
                                   >
-                                    {user.label}                                 
+                                    {user.name}                                 
                                   </CommandItem>
                                 ))}
                                 </CommandList>
@@ -220,7 +276,7 @@ function Tasks() {
                     </div>
                   </div>
                   <DialogFooter>
-                    <Button type="submit" onClick={() => { console.log(Date.parse(date)); setDate()}}>Save changes</Button>
+                    <Button type="submit" onClick={handleNewTask}>Save changes</Button>
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
@@ -257,6 +313,7 @@ function Tasks() {
             </Card>
           </TabsContent>
         </Tabs>
+        <Toaster/>
       </div>
     </>
   )

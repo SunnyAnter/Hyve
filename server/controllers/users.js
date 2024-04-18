@@ -66,3 +66,17 @@ exports.register = async (req, res) => {
     res.send()
   }
 }
+exports.getUsers = async (req, res) => {
+try {
+  const users = await Users.find({});
+  res.status(200);
+  res.send(users)
+} catch (error) {
+  res.status(400);
+  res.send()
+}
+}
+
+exports.getUserById = (req, res) => {
+
+}

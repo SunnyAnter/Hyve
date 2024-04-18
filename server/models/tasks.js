@@ -7,7 +7,7 @@ const taskSchema = new Schema({
     required: true
   },
   due_date: {
-    type: Date,
+    type: String,
     required: true
   },
   progress: {
