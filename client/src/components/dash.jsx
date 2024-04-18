@@ -7,7 +7,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-
 export default function Dashboard({setPage}) {
   return (
     <div className="w-[70px] h-screen bg-slate-100 flex flex-col justify-start items-center gap-3 pt-5 border-r shadow-lg">

@@ -16,14 +16,14 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import moment from "moment"
-function Task() {
-  const progress = 0;
-  const date = moment(Date.now()).format('MMM Do, YY');
+function Task({task}) {
+  const progress = task.progress;
+  const date = moment(task.due_date).format('MMM Do, YY');
   return (
     <>
       <Card className="flex flex-row gap-8 w-[940px] h-[66px]">
         <CardHeader className="w-56">
-          <CardTitle>Authentication Exercise</CardTitle>
+          <CardTitle>{task.title}</CardTitle>
         </CardHeader>
         <CardDescription className="flex flex-row gap-2">
           <CardTitle className="mt-6 w-23">Due Date</CardTitle>
@@ -46,8 +46,7 @@ function Task() {
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectLabel>Sunny</SelectLabel>
-              <SelectLabel>Toby</SelectLabel>
+              {task.assignees.map((user) => <SelectLabel>{user.name}</SelectLabel>)}
             </SelectGroup>
           </SelectContent>
         </Select>

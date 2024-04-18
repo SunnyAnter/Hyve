@@ -52,35 +52,12 @@ import {
 } from "@/components/ui/command";
 import apiService from "@/services/apiServices";
 import { useToast } from "./ui/use-toast";
-import { useInput } from "react-day-picker";
 import { Toaster } from "./ui/toaster";
 
-const init = [
-  {
-    value: "toby",
-    label: "Toby",
-  },
-  {
-    value: "jason",
-    label: "Jason",
-  },
-  {
-    value: "sam",
-    label: "Sam",
-  },
-  {
-    value: "gerry",
-    label: "Gerry",
-  },
-  {
-    value: "tekraj",
-    label: "Tekraj",
-  }
-]
-
-function Tasks({user}) {
+function Tasks({ user }) {
+  const [tasks, setTasks] = useState([]);
   const { toast } = useToast();
-  const [users, setUsers] = useState(init);
+  const [users, setUsers] = useState([]);
   const [assignees, setAssignees] = useState([]);
   const [date, setDate] = useState();
   const [title, setTitle] = useState("");
@@ -91,6 +68,7 @@ function Tasks({user}) {
   const handleNewTask = async () => {
     const today = Date.now();
     const UserIds = assignees.map((user) => user._id)
+    UserIds.push(user.id);
     if (title.length === 0 || !date || assignees.length === 0){
       toast({
         title: "Uh oh! Something went wrong.",
@@ -111,21 +89,23 @@ function Tasks({user}) {
       progress: 0,
       assignees: UserIds
     };
-    // const task = await apiService.createTask(newTask);
+    const task = await apiService.createTask(newTask);
+    setTasks([task, ...tasks]);
     setUsers([...assignees, ...users]);
     setDate();
     setTitle('');
     setAssignees([]);
-    console.log(newTask);
   }
   useEffect(() => {
     const fetch = async () => {
       const users = await apiService.getUsers();
+      const tasks = await apiService.getTasks(user.id);
       const filteredUsers = users.filter((x)=> x._id !== user.id)
       setUsers(filteredUsers)
+      setTasks(tasks)
     }
     fetch();
-  }, [])
+  },[user])
   return (
     <>
       <div className='flex flex-col w-screen gap-7 justify-center items-center'>
@@ -283,32 +263,27 @@ function Tasks({user}) {
             </div>
           </div>
           <TabsContent value="all">
-            <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4">
-              <Task />
-              <Task />
-              <Task />
-              <Task />
-              <Task />
-              <Task />
+            <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
+              {tasks.map((task) => <Task task={task} />) } 
             </Card>
           </TabsContent>
           <TabsContent value="start">
-            <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4">
+            <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
               <h1>start</h1>
             </Card>
           </TabsContent>
           <TabsContent value="progress">
-            <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4">
+            <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
               <h1>progress</h1>
             </Card>
           </TabsContent>
           <TabsContent value="completed">
-            <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4">
+            <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
               <h1>completed</h1>
             </Card>
           </TabsContent>
           <TabsContent value="overdue">
-            <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4">
+            <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
               <h1>overdue</h1>
             </Card>
           </TabsContent>
