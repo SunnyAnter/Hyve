@@ -11,5 +11,6 @@ router.put('/task/:id/comp', taskControllers.updateProgressComp);
 router.put('/task/:id/inpro', taskControllers.updateProgressInpro);
 router.put('/task/:id/overdue', taskControllers.updateProgressOverdue);
 router.post('/task', taskControllers.createTask);
+router.delete('/task/:id', taskControllers.deleteTask);
 
 module.exports = router

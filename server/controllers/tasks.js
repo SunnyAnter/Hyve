@@ -78,3 +78,23 @@ exports.updateProgressOverdue = async (req, res) => {
     res.send()
   }
 }
+exports.deleteTask = async (req, res) => {
+  try {
+    const id = req.params['id'];
+    if (!id) {
+      console.error('error accesing id');
+    }
+    await Tasks.deleteOne({ _id: id })
+    res.status(200);
+    res.json({
+      data: {
+        code: 200,
+        msg:'Task successfully deleted.'
+      }
+    });
+  } catch (error) {
+    res.status(500);
+    console.log(error);
+    res.send('Internal Server Error');
+  }
+}

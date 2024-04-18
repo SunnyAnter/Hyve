@@ -1,7 +1,7 @@
 import { CalendarIcon } from "@radix-ui/react-icons"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import { Check } from 'lucide-react';
+import { Check, Trash2 } from 'lucide-react';
 import {
   Card,
   CardDescription,
@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/select"
 import moment from "moment"
 import { Button } from "./ui/button"
-function Task({task, handleProgress}) {
+function Task({task, handleProgress,handleDelete}) {
   const progress = task.progress;
   const date = moment(task.due_date).format('MMM Do, YY');
   return (
@@ -52,7 +52,10 @@ function Task({task, handleProgress}) {
             </SelectGroup>
           </SelectContent>
         </Select>
+        <div className="flex gap-2">
+        <Button onClick={() => handleDelete(task._id)} variant="outline" className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground transition-cozlors hover:text-foreground md:h-6 md:w-6 p-1"><Trash2 size={24} /></Button>
         <Button onClick={() => handleProgress(task._id, true)} variant="outline" className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground transition-cozlors hover:text-foreground md:h-6 md:w-6 p-1"><Check size={24}/></Button>
+        </div>
       </Card>
     </>
   )

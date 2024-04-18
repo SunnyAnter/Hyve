@@ -66,7 +66,15 @@ function Tasks({ user }) {
     const updatedTask = await apiService.updateProgress(id, isComp);
     setTasks(tasks.map(task => task._id === id ? updatedTask : task));
   }
-
+  const handleDelete = async (id) => {
+    const date = Date.now();
+    const deleteMessage = await apiService.delete(id);
+    setTasks(tasks.filter(task => task._id !== id));
+    toast({
+      title: deleteMessage.data.msg,
+      description: moment(date).format('LLLL')
+    })
+  }
   const handleChange = (e) => {
     setTitle(e.target.value)
   }
@@ -81,13 +89,13 @@ function Tasks({ user }) {
       })
       return
     }
-    // if (Date.parse(date) < today) {
-    //   toast({
-    //     title: "Uh oh! Something went wrong.",
-    //     description: "Due date can't be in the past"
-    //   })
-    //   return
-    // }
+    if (Date.parse(date) < today) {
+      toast({
+        title: "Uh oh! Something went wrong.",
+        description: "Due date can't be in the past"
+      })
+      return
+    }
     const newTask = {
       title,
       due_date: Date.parse(date),
@@ -109,7 +117,7 @@ function Tasks({ user }) {
       const filteredUsers = users.filter((x)=> x._id !== user.id)
       setUsers(filteredUsers)
       const updatedTasks = await Promise.all(tasks.map(async (task) => {
-        if (today > task.due_date) {
+        if (today > task.due_date && task.progress !== 2) {
           const updatedTask = await apiService.updateOverdue(task._id);
           return updatedTask;
         } else {
@@ -278,27 +286,27 @@ function Tasks({ user }) {
           </div>
           <TabsContent value="all">
             <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
-              {tasks.map((task) => <Task task={task} key={task._id} handleProgress={handleProgress}/>) } 
+              {tasks.map((task) => <Task task={task} key={task._id} handleProgress={handleProgress} handleDelete={handleDelete} />) } 
             </Card>
           </TabsContent>
           <TabsContent value="start">
             <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
-              {tasks.filter(task => task.progress === 0).map((task) => <Task task={task} key={task._id} handleProgress={handleProgress} />)} 
+              {tasks.filter(task => task.progress === 0).map((task) => <Task task={task} key={task._id} handleProgress={handleProgress} handleDelete={handleDelete}/>)} 
             </Card>
           </TabsContent>
           <TabsContent value="progress">
             <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
-              {tasks.filter(task => task.progress === 1).map((task) => <Task task={task} key={task._id} handleProgress={handleProgress} />)} 
+              {tasks.filter(task => task.progress === 1).map((task) => <Task task={task} key={task._id} handleProgress={handleProgress} handleDelete={handleDelete} />)} 
             </Card>
           </TabsContent>
           <TabsContent value="completed">
             <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
-              {tasks.filter(task => task.progress === 2).map((task) => <Task task={task} key={task._id} handleProgress={handleProgress} />)} 
+              {tasks.filter(task => task.progress === 2).map((task) => <Task task={task} key={task._id} handleProgress={handleProgress} handleDelete={handleDelete} />)} 
             </Card>
           </TabsContent>
           <TabsContent value="overdue">
             <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
-              {tasks.filter(task => task.progress === 3).map((task) => <Task task={task} key={task._id} handleProgress={handleProgress} />)} 
+              {tasks.filter(task => task.progress === 3).map((task) => <Task task={task} key={task._id} handleProgress={handleProgress} handleDelete={handleDelete} />)} 
             </Card>
           </TabsContent>
         </Tabs>

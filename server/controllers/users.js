@@ -76,7 +76,3 @@ try {
   res.send()
 }
 }
-
-exports.getUserById = (req, res) => {
-
-}
