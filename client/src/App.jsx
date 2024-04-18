@@ -11,7 +11,7 @@ function App() {
   return (
     <>
       {
-        (user === null) ?
+        (!user === null) ?
           <LoginPage setUser={setUser} />
           :
           <div className='flex'>

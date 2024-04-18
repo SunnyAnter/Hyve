@@ -38,6 +38,13 @@ try {
 exports.register = async (req, res) => {
   try {
     const { email, name, lastName, password } = req.body;
+    const user = await Users.findOne({ email });
+    if (user !== null) {
+      return res.status(400).json({
+        data: null,
+        error: { code: 400, msg: 'User with email already exists.' },
+      });
+    }
     if (password.length < 8) {
       return res.status(400).json({
         data: null,
@@ -46,13 +53,6 @@ exports.register = async (req, res) => {
     }
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-    const user = await Users.findOne({ email });
-    if (user !== null) {
-      return res.status(400).json({
-        data: null,
-        error: { code: 400, msg: 'User with email already exists.' },
-      });
-    }
     const newUser = await Users.create({
       email,
       name,
