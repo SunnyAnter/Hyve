@@ -1,7 +1,7 @@
 import { CalendarIcon } from "@radix-ui/react-icons"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import { Check, Trash2, ScrollText,Scroll,CirclePlay } from 'lucide-react';
+import { Check, Trash2, ScrollText,Scroll,CirclePlay, CircleStop} from 'lucide-react';
 import {
   Card,
   CardDescription,
@@ -32,7 +32,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-function Task({task, handleProgress,handleDelete}) {
+import { useState } from "react";
+function Task({ task, handleProgress, handleDelete }) {
+  const [timer, setTimer] = useState(true);
   const progress = task.progress;
   const date = moment(task.due_date).format('MMM Do, YYYY');
   return (
@@ -82,16 +84,29 @@ function Task({task, handleProgress,handleDelete}) {
             </div>
           </SheetContent>
           </Sheet>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button variant="outline" className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground transition-cozlors hover:text-foreground md:h-8 md:w-8 p-1"><CirclePlay size={24}/></Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Start Timer</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          {
+            timer ?
+              <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                    <Button variant="outline" className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground transition-cozlors hover:text-foreground md:h-8 md:w-8 p-1" onClick={() => setTimer(false)}><CirclePlay size={24} /></Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Clock In</p>
+                </TooltipContent>
+              </Tooltip>
+              </TooltipProvider> :
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button variant="outline" className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground transition-cozlors hover:text-foreground md:h-8 md:w-8 p-1" onClick={()=>setTimer(true)}><CircleStop size={24} color="red"/></Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Clock Out</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+          }
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
