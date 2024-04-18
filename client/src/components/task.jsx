@@ -1,7 +1,7 @@
 import { CalendarIcon } from "@radix-ui/react-icons"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import { Check, Trash2 } from 'lucide-react';
+import { Check, Trash2, ScrollText,Scroll,CirclePlay } from 'lucide-react';
 import {
   Card,
   CardDescription,
@@ -18,6 +18,20 @@ import {
 } from "@/components/ui/select"
 import moment from "moment"
 import { Button } from "./ui/button"
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 function Task({task, handleProgress,handleDelete}) {
   const progress = task.progress;
   const date = moment(task.due_date).format('MMM Do, YY');
@@ -42,6 +56,7 @@ function Task({task, handleProgress,handleDelete}) {
 
           }
         </CardDescription>
+        <div className="flex gap-2 items-center">
         <Select>
           <SelectTrigger className="w-28 h-8 ml-[-10px]">
             <SelectValue placeholder="Assignees" />
@@ -52,9 +67,52 @@ function Task({task, handleProgress,handleDelete}) {
             </SelectGroup>
           </SelectContent>
         </Select>
-        <div className="flex gap-2">
-        <Button onClick={() => handleDelete(task._id)} variant="outline" className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground transition-cozlors hover:text-foreground md:h-6 md:w-6 p-1"><Trash2 size={24} /></Button>
-        <Button onClick={() => handleProgress(task._id, true)} variant="outline" className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground transition-cozlors hover:text-foreground md:h-6 md:w-6 p-1"><Check size={24}/></Button>
+        <Sheet>
+          <SheetTrigger asChild>
+              <Button variant="outline" className="flex h-7 w-7 items-center justify-center rounded-md md:h-8 md:w-20 p-2 text-muted-foreground transition-cozlors hover:text-foreground"><span className="p-1">Logs</span>&nbsp;<ScrollText size={24} /></Button>
+          </SheetTrigger>
+          <SheetContent>
+            <SheetHeader>
+              <SheetTitle>{task.title} Logs</SheetTitle>
+              <SheetDescription>
+                You can track the progress of your task in this segment.
+              </SheetDescription>
+            </SheetHeader>
+            <div className="h-full w-full mt-6 border-2 rounded-md border-slate-500">
+             
+            </div>
+          </SheetContent>
+          </Sheet>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="outline" className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground transition-cozlors hover:text-foreground md:h-7 md:w-7 p-1"><CirclePlay size={24} /></Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Start Timer</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button onClick={() => handleProgress(task._id, true)} variant="outline" className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground transition-cozlors hover:text-foreground md:h-7 md:w-7 p-1"><Check size={24} /></Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Task Completed</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button onClick={() => handleDelete(task._id)} variant="outline" className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground transition-cozlors hover:text-foreground md:h-7 md:w-7 p-1"><Trash2 size={24} /></Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Delete Task</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       </Card>
     </>
