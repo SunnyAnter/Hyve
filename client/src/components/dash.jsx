@@ -7,7 +7,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-export default function Dashboard({setPage}) {
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+export default function Dashboard({setPage,setUser}) {
   return (
     <div className="w-[70px] h-screen bg-slate-100 flex flex-col justify-start items-center gap-3 pt-5 border-r shadow-lg">
       <div className="w-12 h-14 flex justify-center">
@@ -49,9 +55,18 @@ export default function Dashboard({setPage}) {
         <div className="absolute bottom-5">
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="outline" className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-cozlors hover:text-foreground md:h-10 md:w-10 p-2">
-                <Settings color="black" size={24} />
-              </Button>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline" className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-cozlors hover:text-foreground md:h-10 md:w-10 p-2">
+                    <Settings color="black" size={24} />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[300px] flex justify-center">
+                  <DialogFooter>
+                    <Button onClick={() => { setUser(null); setPage('home') }}>Sign Out</Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
             </TooltipTrigger>
             <TooltipContent side="right">
               <p>Settings</p>

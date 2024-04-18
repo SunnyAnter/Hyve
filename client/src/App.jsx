@@ -15,7 +15,7 @@ function App() {
           <LoginPage setUser={setUser} />
           :
           <div className='flex'>
-            <Dashboard setPage={setPage}/>
+            <Dashboard setPage={setPage} setUser={setUser} />
             {
               (page === 'home') ? <Home /> : <Tasks user={user} />
             }
