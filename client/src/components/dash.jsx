@@ -44,7 +44,8 @@ export default function Dashboard({setPage,setUser}) {
         </Tooltip>
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button variant="outline" className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-cozlors hover:text-foreground md:h-10 md:w-10 p-2">
+            <Button variant="outline" className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-cozlors hover:text-foreground md:h-10 md:w-10 p-2"
+              onClick={() => setPage('productivity')}>
               <AlarmClockCheck color="black" size={24} />
             </Button>
           </TooltipTrigger>

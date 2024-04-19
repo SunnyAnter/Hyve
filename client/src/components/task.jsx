@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import { Check, Trash2, ScrollText, Scroll, CirclePlay, CircleStop } from 'lucide-react';
+import '../App.css'
+import { Check, Trash2, ScrollText, Scroll, CirclePlay, CircleStop, MessageSquareMore, Send } from 'lucide-react';
 import { Textarea } from "@/components/ui/textarea"
 import {
   Popover,
@@ -40,6 +41,13 @@ import {
 import { useState } from "react";
 import Log from "./log";
 import apiService from "@/services/apiServices";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import Message from "./messages";
 function Task({ task, handleProgress, handleDelete, user }) {
   const [workTime, setWorkTime] = useState(0);
   const [newLog, setNewLog] = useState('');
@@ -71,7 +79,7 @@ function Task({ task, handleProgress, handleDelete, user }) {
   }
   return (
     <>
-      <Card className="flex flex-row gap-8 w-[940px] h-[66px] justify-start items-center">
+      <Card className="flex flex-row gap-8 w-[1015px] h-[66px] justify-start items-center">
         <CardHeader className="w-56">
           <CardTitle className="cursor-default">{task.title}</CardTitle>
         </CardHeader>
@@ -89,7 +97,7 @@ function Task({ task, handleProgress, handleDelete, user }) {
 
           }
         </CardDescription>
-        <div className="flex justify-between items-center ml-[-15px] w-[340px]">
+        <div className="flex justify-between items-center ml-[-15px] w-[420px]">
         <Select>
           <SelectTrigger className="w-28 h-8">
             <SelectValue placeholder="Assignees"/>
@@ -99,7 +107,24 @@ function Task({ task, handleProgress, handleDelete, user }) {
               {task.assignees.map((user) => <SelectLabel key={task._id}>{user.name}</SelectLabel>)}
             </SelectGroup>
           </SelectContent>
-        </Select>
+          </Select>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" className="flex h-7 w-7 items-center justify-center rounded-md md:h-8 md:w-20 p-2 text-muted-foreground transition-cozlors hover:text-foreground"><span className="p-1">Chat</span> &nbsp;<MessageSquareMore size={24} /></Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[650px]">
+              <div id="message" className="h-[550px] mt-4 rounded-xl border-slate-200 pt-5 pr-3 pl-3 pb-5 flex flex-col gap-4 overflow-scroll scrollbar-none shadow-inner">
+                <Message />
+                <Message />
+                <Message />
+                <Message />
+              </div>
+              <DialogFooter>
+                <Input rows={1} className="h-full rounded-xl focus:outline-none" />
+                <Button className="h-10 bg-blue-500 w-12 p-1 rounded-xl flex justify-center items-center" variant="outline"><Send size={24} color="white"/></Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         <Sheet>
           <SheetTrigger asChild>
               <Button variant="outline" className="flex h-7 w-7 items-center justify-center rounded-md md:h-8 md:w-20 p-2 text-muted-foreground transition-cozlors hover:text-foreground">
@@ -114,7 +139,7 @@ function Task({ task, handleProgress, handleDelete, user }) {
             </SheetHeader>
               <div className="h-full flex flex-col w-full mt-4 rounded-md pt-4 pl-4 pr-4 pb-20 overflow-scroll gap-4 scrollbar-none">
                 {(logs.length === 0) ?
-                  <div></div> :
+                  <div className="w-full h-full flex justify-center items-start pt-14"><h1>No Logs Created</h1></div> :
                   <>
                     {logs.map((log) => <Log key={log._id} log={log} />)}
                   </> 

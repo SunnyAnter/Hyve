@@ -62,6 +62,26 @@ function Tasks({ user }) {
   const [date, setDate] = useState();
   const [title, setTitle] = useState("");
 
+  useEffect(() => {
+    const today = Date.now();
+    const fetch = async () => {
+      const users = await apiService.getUsers();
+      const tasks = await apiService.getTasks(user.id);
+      const filteredUsers = users.filter((x)=> x._id !== user.id)
+      setUsers(filteredUsers)
+      const updatedTasks = await Promise.all(tasks.map(async (task) => {
+        if (today > task.due_date && task.progress !== 2) {
+          const updatedTask = await apiService.updateOverdue(task._id);
+          return updatedTask;
+        } else {
+          return task;
+        }
+      }));
+      setTasks(updatedTasks.reverse())
+    }
+    fetch();
+  }, [user])
+  
   const handleProgress = async (id, isComp) => {
     const updatedTask = await apiService.updateProgress(id, isComp);
     setTasks(tasks.map(task => task._id === id ? updatedTask : task));
@@ -110,31 +130,11 @@ function Tasks({ user }) {
     setTitle('');
     setAssignees([]);
   }
-  useEffect(() => {
-    const today = Date.now();
-    const fetch = async () => {
-      const users = await apiService.getUsers();
-      const tasks = await apiService.getTasks(user.id);
-      const filteredUsers = users.filter((x)=> x._id !== user.id)
-      setUsers(filteredUsers)
-      const updatedTasks = await Promise.all(tasks.map(async (task) => {
-        if (today > task.due_date && task.progress !== 2) {
-          const updatedTask = await apiService.updateOverdue(task._id);
-          return updatedTask;
-        } else {
-          return task;
-        }
-      }));
-      setTasks(updatedTasks.reverse())
-      console.log(tasks)
-    }
-    fetch();
-  }, [user])
   return (
     <>
       <div className='flex flex-col w-screen gap-7 justify-center items-center'>
         <Tabs defaultValue="all" className="w-[980px]">
-          <div className="flex w-[980px] justify-between">
+          <div className="flex w-[1050px] justify-between">
           <TabsList>
             <TabsTrigger value="all">All</TabsTrigger>
             <TabsTrigger value="start">Not Started</TabsTrigger>
@@ -151,7 +151,7 @@ function Tasks({ user }) {
                   <SelectGroup>
                     <SelectLabel>Sort</SelectLabel>
                     <SelectItem value="recent">Recent</SelectItem>
-                    <SelectItem value="due-date">Due Date</SelectItem>
+                    <SelectItem value="due_date">Due Date</SelectItem>
                     <SelectItem value="progress">Progress</SelectItem>
                   </SelectGroup>
                 </SelectContent>
@@ -287,27 +287,27 @@ function Tasks({ user }) {
             </div>
           </div>
           <TabsContent value="all">
-            <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
+            <Card className="w-[1050px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
               {tasks.map((task) => <Task task={task} key={task._id} handleProgress={handleProgress} handleDelete={handleDelete} user={user} />) } 
             </Card>
           </TabsContent>
           <TabsContent value="start">
-            <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
+            <Card className="w-[1050px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
               {tasks.filter(task => task.progress === 0).map((task) => <Task task={task} key={task._id} handleProgress={handleProgress} handleDelete={handleDelete} user={user} />)} 
             </Card>
           </TabsContent>
           <TabsContent value="progress">
-            <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
+            <Card className="w-[1050px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
               {tasks.filter(task => task.progress === 1).map((task) => <Task task={task} key={task._id} handleProgress={handleProgress} handleDelete={handleDelete} user={user} />)} 
             </Card>
           </TabsContent>
           <TabsContent value="completed">
-            <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
+            <Card className="w-[1050px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
               {tasks.filter(task => task.progress === 2).map((task) => <Task task={task} key={task._id} handleProgress={handleProgress} handleDelete={handleDelete} user={user} />)} 
             </Card>
           </TabsContent>
           <TabsContent value="overdue">
-            <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
+            <Card className="w-[1050px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
               {tasks.filter(task => task.progress === 3).map((task) => <Task task={task} key={task._id} handleProgress={handleProgress} handleDelete={handleDelete} user={user} />)} 
             </Card>
           </TabsContent>
