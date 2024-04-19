@@ -1,6 +1,12 @@
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import { Check, Trash2, ScrollText,Scroll,CirclePlay, CircleStop} from 'lucide-react';
+import { Check, Trash2, ScrollText, Scroll, CirclePlay, CircleStop } from 'lucide-react';
+import { Textarea } from "@/components/ui/textarea"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 import {
   Card,
   CardDescription,
@@ -33,27 +39,53 @@ import {
 } from "@/components/ui/tooltip"
 import { useState } from "react";
 import Log from "./log";
-function Task({ task, handleProgress, handleDelete }) {
+import apiService from "@/services/apiServices";
+function Task({ task, handleProgress, handleDelete, user }) {
+  const [workTime, setWorkTime] = useState(0);
+  const [newLog, setNewLog] = useState('');
+  const [logs, setLogs] = useState(task.logs);
   const [timer, setTimer] = useState(true);
   const progress = task.progress;
   const date = moment(task.due_date).format('MMM Do, YYYY');
+  const handleLogInput = (e) => {
+    setNewLog(e.target.value);
+  }
+  const handleLogTimer = async (isStart) => {
+    if (isStart) {
+      setWorkTime(Date.now());
+      setTimer(false);
+    } else {
+      const time = Date.now() - workTime;
+      const log = {
+        user: user.id,
+        time,
+        date: Date.now(),
+        msg: newLog
+      };
+      const createdLog = await apiService.createLog(log, task._id);
+      setLogs([...logs, createdLog]);
+      handleProgress(task._id, false)
+      setNewLog('');
+      setTimer(true)
+    }
+  }
   return (
     <>
       <Card className="flex flex-row gap-8 w-[940px] h-[66px] justify-start items-center">
         <CardHeader className="w-56">
-          <CardTitle>{task.title}</CardTitle>
+          <CardTitle className="cursor-default">{task.title}</CardTitle>
         </CardHeader>
         <CardDescription className="flex flex-row gap-2 justify-start items-center">
-          <CardTitle className="w-23 flex justify-center items-center">Due Date</CardTitle>
-          <Input disabled type="text" value={date} className="w-32 mr-3" />
+          <CardTitle className="w-23 flex justify-center items-center cursor-default">Due Date</CardTitle>
+          <Input disabled type="text" value={date} className="w-32 mr-3 cursor-default" />
           {
             (progress === 0) ?
-              <Badge className="h-8 w-24 bg-cyan-500 hover:bg-cyan-600 flex justify-center text-cyan-50">Not Started</Badge>
+              <Badge className="h-8 w-24 bg-cyan-500 hover:bg-cyan-600 flex justify-center text-cyan-50 cursor-default">Not Started</Badge>
               : progress === 1 ?
-                <Badge className="h-8 w-24 bg-indigo-500 hover:bg-indigo-600 flex justify-center text-indigo-50">In Progress</Badge>
+                <Badge className="h-8 w-24 bg-indigo-500 hover:bg-indigo-600 flex justify-center text-indigo-50 cursor-default">In Progress</Badge>
                 : progress === 2 ?
-                  <Badge className="h-8 w-24 bg-teal-500 hover:bg-teal-600 flex justify-center text-teal-50">Completed</Badge>
-                  : <Badge className="h-8 w-24 bg-rose-500 hover:bg-rose-600 flex justify-center text-rose-50">Overdue</Badge>
+                  <Badge className="h-8 w-24 bg-teal-500 hover:bg-teal-600 flex justify-center text-teal-50 cursor-default">Completed</Badge>
+                  : <Badge className="h-8 w-24 bg-rose-500 hover:bg-rose-600 flex justify-center text-rose-50 cursor-default">Overdue</Badge>
 
           }
         </CardDescription>
@@ -70,7 +102,8 @@ function Task({ task, handleProgress, handleDelete }) {
         </Select>
         <Sheet>
           <SheetTrigger asChild>
-              <Button variant="outline" className="flex h-7 w-7 items-center justify-center rounded-md md:h-8 md:w-20 p-2 text-muted-foreground transition-cozlors hover:text-foreground"><span className="p-1">Logs</span>&nbsp;<ScrollText size={24} /></Button>
+              <Button variant="outline" className="flex h-7 w-7 items-center justify-center rounded-md md:h-8 md:w-20 p-2 text-muted-foreground transition-cozlors hover:text-foreground">
+                <span className="p-1">Logs</span>&nbsp; {logs.length === 0 ?<Scroll size={24} />:<ScrollText size={24}/>}</Button>
           </SheetTrigger>
           <SheetContent>
             <SheetHeader>
@@ -79,12 +112,13 @@ function Task({ task, handleProgress, handleDelete }) {
                 You can track the progress of your task in this segment.
               </SheetDescription>
             </SheetHeader>
-            <div className="h-full flex flex-col w-full mt-4 rounded-md pt-4 pl-4 pr-4 pb-20 overflow-scroll gap-4 scrollbar-none">
-                <Log />
-                <Log />
-                <Log />
-                <Log />
-                <Log />
+              <div className="h-full flex flex-col w-full mt-4 rounded-md pt-4 pl-4 pr-4 pb-20 overflow-scroll gap-4 scrollbar-none">
+                {(logs.length === 0) ?
+                  <div></div> :
+                  <>
+                    {logs.map((log) => <Log key={log._id} log={log} />)}
+                  </> 
+                  }
             </div>
           </SheetContent>
           </Sheet>
@@ -93,7 +127,7 @@ function Task({ task, handleProgress, handleDelete }) {
               <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                    <Button variant="outline" className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground transition-cozlors hover:text-foreground md:h-8 md:w-8 p-1" onClick={() => setTimer(false)}><CirclePlay size={24} /></Button>
+                    <Button variant="outline" className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground transition-cozlors hover:text-foreground md:h-8 md:w-8 p-1" onClick={() => handleLogTimer(true)}><CirclePlay size={24} /></Button>
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>Clock In</p>
@@ -103,7 +137,17 @@ function Task({ task, handleProgress, handleDelete }) {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Button variant="outline" className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground transition-cozlors hover:text-foreground md:h-8 md:w-8 p-1" onClick={()=>setTimer(true)}><CircleStop size={24} color="red"/></Button>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button variant="outline" className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground transition-cozlors hover:text-foreground md:h-8 md:w-8 p-1"><CircleStop size={24} color="red"/></Button>
+                      </PopoverTrigger>
+                      <PopoverContent>
+                        <div className="grid w-full gap-2">
+                          <Textarea placeholder="Type your update here." value={newLog} onChange={handleLogInput} />
+                          <Button onClick={() => handleLogTimer(false)}>Submit Log</Button>
+                        </div>
+                      </PopoverContent>
+                    </Popover>
                   </TooltipTrigger>
                   <TooltipContent>
                     <p>Clock Out</p>

@@ -6,15 +6,15 @@ import {
 } from "@/components/ui/card"
 import { Separator } from "./ui/separator"
 import moment from "moment"
-function Log() {
-  const today = Date.now()
+function Log({log}) {
+  const today = log.date;
   return (
     <>
       <Card className="bg-slate-800 text-white">
         <CardHeader>
-          <CardTitle className="text-xs flex justify-between"><span className="flex">Sunny &nbsp;<Separator orientation="vertical" className="bg-white" />&nbsp; 2 Hours</span><span>{moment(today).format("MMMM Do, YYYY")}</span></CardTitle>
+          <CardTitle className="text-xs flex justify-between"><span className="flex">{log.user.name} &nbsp;<Separator orientation="vertical" className="bg-white" />&nbsp;{log.time}</span><span>{moment(today).format("MMMM Do, YYYY")}</span></CardTitle>
           <Separator className="w-full"/>
-          <CardDescription className="text-xs text-slate-100">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Soluta est obcaecati aperiam incidunt. Atque minus possimus libero eligendi nemo assumenda debitis doloremque delectus tempora? Laudantium omnis quae ipsum facilis aut. lore</CardDescription>
+          <CardDescription className="text-xs text-slate-100">{log.msg}</CardDescription>
         </CardHeader>
       </Card>
     </>

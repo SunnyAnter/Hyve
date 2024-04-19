@@ -125,11 +125,11 @@ function Tasks({ user }) {
           return task;
         }
       }));
-      setTasks(updatedTasks)
+      setTasks(updatedTasks.reverse())
+      console.log(tasks)
     }
     fetch();
   }, [user])
-  console.log(tasks)
   return (
     <>
       <div className='flex flex-col w-screen gap-7 justify-center items-center'>
@@ -288,27 +288,27 @@ function Tasks({ user }) {
           </div>
           <TabsContent value="all">
             <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
-              {tasks.map((task) => <Task task={task} key={task._id} handleProgress={handleProgress} handleDelete={handleDelete} />) } 
+              {tasks.map((task) => <Task task={task} key={task._id} handleProgress={handleProgress} handleDelete={handleDelete} user={user} />) } 
             </Card>
           </TabsContent>
           <TabsContent value="start">
             <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
-              {tasks.filter(task => task.progress === 0).map((task) => <Task task={task} key={task._id} handleProgress={handleProgress} handleDelete={handleDelete}/>)} 
+              {tasks.filter(task => task.progress === 0).map((task) => <Task task={task} key={task._id} handleProgress={handleProgress} handleDelete={handleDelete} user={user} />)} 
             </Card>
           </TabsContent>
           <TabsContent value="progress">
             <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
-              {tasks.filter(task => task.progress === 1).map((task) => <Task task={task} key={task._id} handleProgress={handleProgress} handleDelete={handleDelete} />)} 
+              {tasks.filter(task => task.progress === 1).map((task) => <Task task={task} key={task._id} handleProgress={handleProgress} handleDelete={handleDelete} user={user} />)} 
             </Card>
           </TabsContent>
           <TabsContent value="completed">
             <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
-              {tasks.filter(task => task.progress === 2).map((task) => <Task task={task} key={task._id} handleProgress={handleProgress} handleDelete={handleDelete} />)} 
+              {tasks.filter(task => task.progress === 2).map((task) => <Task task={task} key={task._id} handleProgress={handleProgress} handleDelete={handleDelete} user={user} />)} 
             </Card>
           </TabsContent>
           <TabsContent value="overdue">
             <Card className="w-[980px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
-              {tasks.filter(task => task.progress === 3).map((task) => <Task task={task} key={task._id} handleProgress={handleProgress} handleDelete={handleDelete} />)} 
+              {tasks.filter(task => task.progress === 3).map((task) => <Task task={task} key={task._id} handleProgress={handleProgress} handleDelete={handleDelete} user={user} />)} 
             </Card>
           </TabsContent>
         </Tabs>

@@ -1,9 +1,12 @@
 const Tasks = require('../models/tasks');
-
+const Logs = require('../models/logs')
 exports.getTasks = async (req, res) => {
   try {
     const id = req.params.id;
-    const userTasks = await Tasks.find({ assignees: { $in: id } }).populate('assignees').populate('logs').exec();
+    const userTasks = await Tasks.find({ assignees: { $in: id } }).populate('assignees').populate({
+      path: 'logs',
+      populate: { path: 'user' }
+    }).exec();
     res.status(200)
     res.send(userTasks)
   } catch (error) {
@@ -16,7 +19,10 @@ exports.getTasks = async (req, res) => {
 exports.createTask = async (req, res) => {
   try {
     const newTask = await Tasks.create(req.body);
-    const populatedTask = await Tasks.findOne({ _id: newTask._id }).populate('assignees').exec();
+    const populatedTask = await Tasks.findOne({ _id: newTask._id }).populate('assignees').populate({
+      path: 'logs',
+      populate: { path: 'user' }
+    }).exec();
     res.status(201);
     res.send(populatedTask);
   } catch (e) {
@@ -25,6 +31,7 @@ exports.createTask = async (req, res) => {
     res.send()
   }
 }
+
 exports.updateProgressInpro = async (req, res) => {
   try {
     const id = req.params['id'];
@@ -33,7 +40,10 @@ exports.updateProgressInpro = async (req, res) => {
     }
     const updatedTask = await Tasks.findOneAndUpdate({ _id:id}, {progress:1}, {
       new: true
-    });
+    }).populate('assignees').populate({
+      path: 'logs',
+      populate: { path: 'user' }
+    }).exec();
     res.status(200)
     res.send(updatedTask);
   } catch (error) {
@@ -51,7 +61,10 @@ exports.updateProgressComp = async (req, res) => {
     const updatedTask = await Tasks.findOneAndUpdate({ _id: id }, { progress: 2 }, {
       new: true
     });
-    const populatedTask = await Tasks.findOne({ _id: updatedTask._id }).populate('assignees').populate('logs').exec();
+    const populatedTask = await Tasks.findOne({ _id: updatedTask._id }).populate('assignees').populate({
+      path: 'logs',
+      populate: { path: 'user' }
+    }).exec();;
     res.status(200)
     res.send(populatedTask);
   } catch (error) {
@@ -69,7 +82,10 @@ exports.updateProgressOverdue = async (req, res) => {
     const updatedTask = await Tasks.findOneAndUpdate({ _id: id }, { progress: 3 }, {
       new: true
     });
-    const populatedTask = await Tasks.findOne({ _id: updatedTask._id }).populate('assignees').populate('logs').exec();
+    const populatedTask = await Tasks.findOne({ _id: updatedTask._id }).populate('assignees').populate({
+      path: 'logs',
+      populate: { path: 'user' }
+    }).exec();
     res.status(200)
     res.send(populatedTask);
   } catch (error) {
