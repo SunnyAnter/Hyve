@@ -100,7 +100,8 @@ function Tasks({ user }) {
       title,
       due_date: Date.parse(date),
       progress: 0,
-      assignees: UserIds
+      assignees: UserIds,
+      logs: []
     };
     const task = await apiService.createTask(newTask);
     setTasks([task, ...tasks]);
@@ -127,7 +128,8 @@ function Tasks({ user }) {
       setTasks(updatedTasks)
     }
     fetch();
-  },[user])
+  }, [user])
+  console.log(tasks)
   return (
     <>
       <div className='flex flex-col w-screen gap-7 justify-center items-center'>

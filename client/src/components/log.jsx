@@ -14,7 +14,7 @@ function Log() {
         <CardHeader>
           <CardTitle className="text-xs flex justify-between"><span className="flex">Sunny &nbsp;<Separator orientation="vertical" className="bg-white" />&nbsp; 2 Hours</span><span>{moment(today).format("MMMM Do, YYYY")}</span></CardTitle>
           <Separator className="w-full"/>
-          <CardDescription className="text-xs text-slate-400">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Soluta est obcaecati aperiam incidunt. Atque minus possimus libero eligendi nemo assumenda debitis doloremque delectus tempora? Laudantium omnis quae ipsum facilis aut.</CardDescription>
+          <CardDescription className="text-xs text-slate-100">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Soluta est obcaecati aperiam incidunt. Atque minus possimus libero eligendi nemo assumenda debitis doloremque delectus tempora? Laudantium omnis quae ipsum facilis aut. lore</CardDescription>
         </CardHeader>
       </Card>
     </>

@@ -65,6 +65,15 @@ apiService.delete = (id) => {
     mode: "cors"
   }).then(res => res.json());
 }
-
+apiService.createLog = (log, id) => {
+  return fetch(rootUrl + `/logs/${id}`, {
+    method: 'POST',
+    mode: 'cors',
+    headers: { 'Content-type': 'application/json' },
+    body: JSON.stringify(log),
+  }).then((data) => data.json()).catch((err) => {
+    console.log(err);
+  });
+}
 
 export default apiService;

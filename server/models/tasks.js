@@ -14,7 +14,8 @@ const taskSchema = new Schema({
     type: Number,
     required: true
   },
-  assignees: [{ type: Schema.Types.ObjectId, ref: 'Users' }]
+  assignees: [{ type: Schema.Types.ObjectId, ref: 'Users' }],
+  logs: [{ type: Schema.Types.ObjectId, ref: 'Logs' }]
 })
 const Tasks = mongoose.model('Tasks', taskSchema);
 

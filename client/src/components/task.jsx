@@ -79,7 +79,7 @@ function Task({ task, handleProgress, handleDelete }) {
                 You can track the progress of your task in this segment.
               </SheetDescription>
             </SheetHeader>
-            <div className="h-[670px] flex flex-col w-full mt-4 rounded-md pt-4 pl-4 pr-4 pb-4 overflow-scroll gap-4 scrollbar-none">
+            <div className="h-full flex flex-col w-full mt-4 rounded-md pt-4 pl-4 pr-4 pb-20 overflow-scroll gap-4 scrollbar-none">
                 <Log />
                 <Log />
                 <Log />
@@ -114,7 +114,7 @@ function Task({ task, handleProgress, handleDelete }) {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button onClick={() => handleProgress(task._id, true)} variant="outline" className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground transition-cozlors hover:text-foreground md:h-8 md:w-8 p-1 border-2 border-teal-500"><Check size={24} color="green"/></Button>
+                <Button onClick={() => handleProgress(task._id, true)} variant="outline" className="box-border flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground transition-cozlors hover:text-foreground md:h-8 md:w-8 p-1 border-2 border-teal-500"><Check size={24} color="green"/></Button>
               </TooltipTrigger>
               <TooltipContent>
                 <p>Task Completed</p>
