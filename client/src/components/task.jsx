@@ -29,12 +29,10 @@ function Task({ task, handleProgress, handleDelete, user }) {
         <CardHeader className="w-56">
           <CardTitle className="cursor-default">{task.title}</CardTitle>
         </CardHeader>
-        <CardDescription className="flex flex-row gap-2 justify-start items-center">
+          <CardDescription className="flex justify-between items-center ml-[-15px] w-[750px]">
           <CardTitle className="w-23 flex justify-center items-center cursor-default">Due Date</CardTitle>
-          <Input disabled type="text" value={moment(task.due_date).format('MMM Do, YYYY')} className="w-32 mr-3 cursor-default" /> 
+          <Input disabled type="text" value={moment(task.due_date).format('MMM Do, YYYY')} className="w-32 cursor-default" /> 
           <ProgressBadge progress={task.progress}/>
-        </CardDescription>
-        <div className="flex justify-between items-center ml-[-15px] w-[420px]">
         <Select>
           <SelectTrigger className="w-28 h-8">
             <SelectValue placeholder="Assignees"/>
@@ -49,7 +47,7 @@ function Task({ task, handleProgress, handleDelete, user }) {
           <LogsButton logs={logs} title={task.title} />
           <TimerButton task={task} handleProgress={handleProgress} user={user} logs={logs} setLogs={setLogs}/>
           <CheckAndDeleteButtons task={task} handleDelete={handleDelete} handleProgress={handleProgress}/>
-        </div>
+        </CardDescription>
       </Card>
     </>
   )
