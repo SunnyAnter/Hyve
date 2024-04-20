@@ -38,7 +38,6 @@ export function LoginPage({ setUser }) {
   const handleRegisterChange = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
-    console.log(name, value, registerState)
     setRegisterState((prevState) => ({
       ...prevState,
       [name]: value,
