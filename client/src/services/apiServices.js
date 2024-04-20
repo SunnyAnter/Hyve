@@ -75,5 +75,15 @@ apiService.createLog = (log, id) => {
     console.log(err);
   });
 }
+apiService.sendMessage = (msg, id) => {
+  return fetch(rootUrl + `/messages/${id}`, {
+    method: 'POST',
+    mode: 'cors',
+    headers: { 'Content-type': 'application/json' },
+    body: JSON.stringify(msg),
+  }).then((data) => data.json()).catch((err) => {
+    console.log(err);
+  });
+}
 
 export default apiService;

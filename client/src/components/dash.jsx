@@ -1,18 +1,17 @@
-import { Button } from "@/components/ui/button"
-import circ from '../assets/circ-logo.png'
-import { Home, ClipboardList, AlarmClockCheck, Settings } from 'lucide-react';
 import {
+  Button,
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip"
-import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@ui";
+import circ from '../assets/circ-logo.png'
+import { Home, ClipboardList, AlarmClockCheck, Settings } from 'lucide-react';
+
 export default function Dashboard({setPage,setUser}) {
   return (
     <div className="w-[70px] h-screen bg-slate-100 flex flex-col justify-start items-center gap-3 pt-5 border-r shadow-lg">

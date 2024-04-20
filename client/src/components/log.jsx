@@ -3,9 +3,9 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Separator } from "./ui/separator"
-import moment from "moment"
+  Separator
+} from "@ui";
+import moment from "moment";
 function Log({ log }) {
   const time = (t) => {
     const secs = Math.round(t / 1000);

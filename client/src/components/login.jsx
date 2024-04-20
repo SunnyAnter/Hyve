@@ -1,24 +1,22 @@
-import { Button } from "@/components/ui/button"
-import circ from '../assets/circ-logo.png';
-import { useState } from "react";
 import {
+  Button,
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import {
+  Input,
+  Label,
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@/components/ui/tabs"
+  useToast
+} from "@ui";
+import circ from '../assets/circ-logo.png';
+import { useState } from "react";
 import apiService from "@/services/apiServices";
-import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "./ui/toaster";
 
 const register = {
@@ -53,7 +51,16 @@ export function LoginPage({ setUser }) {
       [name]: value,
     }));
   };
-
+  const handleKeyDownLogin = (e) => {
+    if (e.key === 'Enter') {
+      handleSubmit(false)
+    }
+  };
+  const handleKeyDownRegister = (e) => {
+    if (e.key === 'Enter') {
+      handleSubmit(true)
+    }
+  };
   const handleSubmit = async (isReg) => {
     if (isReg) {
       if (!registerState.name || !registerState.lastName || !registerState.email) {
@@ -131,19 +138,19 @@ export function LoginPage({ setUser }) {
           <CardContent className="space-y-2">
             <div className="space-y-1">
               <Label htmlFor="firstName">Name</Label>
-                  <Input id="firstName" name="name" type="text" value={registerState.name} onChange={handleRegisterChange} required/>
+                  <Input id="firstName" name="name" type="text" value={registerState.name} onChange={handleRegisterChange} onKeyDown={handleKeyDownRegister} required/>
                 </div>
                 <div className="space-y-1">
                   <Label htmlFor="lastName">Last Name</Label>
-                  <Input id="lastName" name="lastName" type="text" value={registerState.lastName} onChange={handleRegisterChange} required />
+                  <Input id="lastName" name="lastName" type="text" value={registerState.lastName} onChange={handleRegisterChange} onKeyDown={handleKeyDownRegister} required />
                 </div>
             <div className="space-y-1">
               <Label htmlFor="e-mail">E-mail</Label>
-                  <Input id="e-mail" name="email" type="email" value={registerState.email} onChange={handleRegisterChange} required />
+                  <Input id="e-mail" name="email" type="email" value={registerState.email} onChange={handleRegisterChange} onKeyDown={handleKeyDownRegister} required />
             </div>
             <div className="space-y-1">
               <Label htmlFor="new">Password</Label>
-                  <Input id="new" name="password" type="password" value={registerState.password} onChange={handleRegisterChange} required />
+                  <Input id="new" name="password" type="password" value={registerState.password} onChange={handleRegisterChange} onKeyDown={handleKeyDownRegister} required />
             </div>
           </CardContent>
           <CardFooter>
@@ -162,11 +169,11 @@ export function LoginPage({ setUser }) {
           <CardContent className="space-y-2">
             <div className="space-y-1">
               <Label htmlFor="e-mail">E-mail</Label>
-                  <Input id="e-mail" name="email" type="email" value={loginState.email} onChange={handleLoginChange} required />
+                  <Input id="e-mail" name="email" type="email" value={loginState.email} onChange={handleLoginChange} onKeyDown={handleKeyDownLogin} required />
             </div>
             <div className="space-y-1">
               <Label htmlFor="current">Password</Label>
-                  <Input id="current" name="password" type="password" value={loginState.password} onChange={handleLoginChange} required />
+                  <Input id="current" name="password" type="password" value={loginState.password} onChange={handleLoginChange} onKeyDown={handleKeyDownLogin} required />
             </div>
           </CardContent>
           <CardFooter>
