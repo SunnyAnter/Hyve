@@ -6,6 +6,9 @@ exports.getTasks = async (req, res) => {
     const userTasks = await Tasks.find({ assignees: { $in: id } }).populate('assignees').populate({
       path: 'logs',
       populate: { path: 'user' }
+    }).populate({
+      path: 'messages',
+      populate: { path: 'user' }
     }).exec();
     res.status(200)
     res.send(userTasks)
@@ -19,10 +22,7 @@ exports.getTasks = async (req, res) => {
 exports.createTask = async (req, res) => {
   try {
     const newTask = await Tasks.create(req.body);
-    const populatedTask = await Tasks.findOne({ _id: newTask._id }).populate('assignees').populate({
-      path: 'logs',
-      populate: { path: 'user' }
-    }).exec();
+    const populatedTask = await Tasks.findOne({ _id: newTask._id }).populate('assignees').exec();
     res.status(201);
     res.send(populatedTask);
   } catch (e) {
@@ -43,6 +43,9 @@ exports.updateProgressInpro = async (req, res) => {
     }).populate('assignees').populate({
       path: 'logs',
       populate: { path: 'user' }
+    }).populate({
+      path: 'messages',
+      populate: { path: 'user' }
     }).exec();
     res.status(200)
     res.send(updatedTask);
@@ -58,11 +61,14 @@ exports.updateProgressComp = async (req, res) => {
     if (!id) {
       console.error('error accesing id');
     }
-    const updatedTask = await Tasks.findOneAndUpdate({ _id: id }, { progress: 2 }, {
+    const updatedTask = await Tasks.findOneAndUpdate({ _id: id }, { progress: 3 }, {
       new: true
     });
     const populatedTask = await Tasks.findOne({ _id: updatedTask._id }).populate('assignees').populate({
       path: 'logs',
+      populate: { path: 'user' }
+    }).populate({
+      path: 'messages',
       populate: { path: 'user' }
     }).exec();;
     res.status(200)
@@ -79,11 +85,14 @@ exports.updateProgressOverdue = async (req, res) => {
     if (!id) {
       console.error('error accesing id');
     }
-    const updatedTask = await Tasks.findOneAndUpdate({ _id: id }, { progress: 3 }, {
+    const updatedTask = await Tasks.findOneAndUpdate({ _id: id }, { progress: 2 }, {
       new: true
     });
     const populatedTask = await Tasks.findOne({ _id: updatedTask._id }).populate('assignees').populate({
       path: 'logs',
+      populate: { path: 'user' }
+    }).populate({
+      path: 'messages',
       populate: { path: 'user' }
     }).exec();
     res.status(200)

@@ -15,8 +15,9 @@ const taskSchema = new Schema({
     required: true
   },
   assignees: [{ type: Schema.Types.ObjectId, ref: 'Users' }],
-  logs: [{ type: Schema.Types.ObjectId, ref: 'Logs' }]
-})
+  logs: [{ type: Schema.Types.ObjectId, ref: 'Logs' }],
+  messages: [{ type: Schema.Types.ObjectId, ref: 'Messages' }]
+},{timestamps:true})
 const Tasks = mongoose.model('Tasks', taskSchema);
 
 module.exports = Tasks;

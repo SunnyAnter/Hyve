@@ -70,7 +70,7 @@ function Tasks({ user }) {
       const filteredUsers = users.filter((x)=> x._id !== user.id)
       setUsers(filteredUsers)
       const updatedTasks = await Promise.all(tasks.map(async (task) => {
-        if (today > task.due_date && task.progress !== 2) {
+        if (today > task.due_date && task.progress !== 3) {
           const updatedTask = await apiService.updateOverdue(task._id);
           return updatedTask;
         } else {
@@ -81,6 +81,32 @@ function Tasks({ user }) {
     }
     fetch();
   }, [user])
+
+  const handleSort = (sortBy) => {
+    let sortedTasks = [...tasks];
+
+    switch (sortBy) {
+      case "recent":
+        sortedTasks.sort((a, b) => {
+          return new Date(b.createdAt) - new Date(a.createdAt);
+        });
+        break;
+      case "due_date":
+        sortedTasks.sort((a, b) => {
+          return new Date(a.due_date) - new Date(b.due_date);
+        });
+        break;
+      case "progress":
+        sortedTasks.sort((a, b) => {
+          return a.progress - b.progress;
+        });
+        break;
+      default:
+        break;
+    }
+
+    setTasks(sortedTasks);
+  };
   
   const handleProgress = async (id, isComp) => {
     const updatedTask = await apiService.updateProgress(id, isComp);
@@ -133,7 +159,7 @@ function Tasks({ user }) {
   return (
     <>
       <div className='flex flex-col w-screen gap-7 justify-center items-center'>
-        <Tabs defaultValue="all" className="w-[980px]">
+        <Tabs defaultValue="all" className="w-[1050px]">
           <div className="flex w-[1050px] justify-between">
           <TabsList>
             <TabsTrigger value="all">All</TabsTrigger>
@@ -143,7 +169,7 @@ function Tasks({ user }) {
             <TabsTrigger value="overdue">Overdue</TabsTrigger>
             </TabsList>
             <div className="flex gap-3">
-              <Select>
+              <Select onValueChange={handleSort}>
                 <SelectTrigger className=" bg-slate-200 text-black hover:bg-slate-300 gap-1">
                   <ListFilter className="h-5 w-5 ml-[-6px]" /><SelectValue placeholder="Sort" />
                 </SelectTrigger>
