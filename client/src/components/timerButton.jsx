@@ -11,13 +11,29 @@ import {
 } from "@ui";
 import apiService from "@/services/apiServices";
 import { CirclePlay, CircleStop } from 'lucide-react';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-function TimerButton({task, handleProgress, user, logs, setLogs}) {
+function TimerButton({task, handleProgress, user, logs, setLogs, socket}) {
   const [timer, setTimer] = useState(true);
   const [workTime, setWorkTime] = useState(0);
   const [newLog, setNewLog] = useState('');
+  const [logInputs, setNewLogInputs] = useState(null);
 
+  useEffect(() => {
+    socket.on("new-log", (data) => {
+      setNewLogInputs(data);
+    })
+  }, [socket]);
+
+  useEffect(() => {
+    if (logInputs) {
+      setLogs([...logs, logInputs]);
+    }
+  }, [logInputs]);
+
+  const sendNewLog = (log) => {
+    socket.emit("send-new-log", log)
+  }
   const handleLogInput = (e) => {
     setNewLog(e.target.value);
   }
@@ -40,6 +56,7 @@ function TimerButton({task, handleProgress, user, logs, setLogs}) {
         msg: newLog
       };
       const createdLog = await apiService.createLog(log, task._id);
+      sendNewLog(createdLog)
       setLogs([...logs, createdLog]);
       handleProgress(task._id, false)
       setNewLog('');

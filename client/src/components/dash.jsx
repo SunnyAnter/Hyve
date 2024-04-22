@@ -67,8 +67,9 @@ export default function Dashboard({setPage,setUser, notifications, setNotificati
                       <TooltipTrigger asChild>
                         <Button variant="outline" className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-cozlors hover:text-foreground md:h-9 md:w-9 p-2" onClick={()=>setNotifications(!notifications)}>
                           {notifications ?
-                            <BellOff color="black" size={24} /> :
-                            <BellRing color="black" size={24} />}</Button>
+                            <BellRing color="black" size={24} />:
+                            <BellOff color="black" size={24} /> 
+                          }</Button>
                       </TooltipTrigger>
                       <TooltipContent side="bottom">
                         {

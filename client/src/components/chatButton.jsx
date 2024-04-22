@@ -26,7 +26,7 @@ function ChatButton({ user, task, socket, notifications}) {
     socket.on("recieve-message", (data) => {
       if (data.room === task._id) {
         setNewNotification(data.msg)
-        setMsgs([...msgs, data.msg]);
+        setMsgs((prev)=>[...prev, data.msg]);
       }
     })
   }, [notifications])

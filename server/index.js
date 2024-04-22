@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const { createServer } = require('node:http');
 const { Server } = require('socket.io');
-const { join } = require('node:path');
 const router = require('./router');
 const conf = require('./config');
 const app = express();
@@ -15,14 +14,25 @@ const io = new Server(server, {
   }
 })
 io.on("connection", (socket) => {
-  console.log('user connected: ' + socket.id)
   socket.on("join-room", (data) => {
     socket.join(data)
   })
   socket.on("send-message", (data) => {
     socket.to(data.room).emit("recieve-message", data)
   })
-  socket.on('disconnect', () => {
+  socket.on("delete-task", (data) => {
+    socket.broadcast.emit("deleted-task", data)
+  })
+  socket.on("update-task", (data) => {
+    socket.broadcast.emit("updated-task", data)
+  })
+  socket.on("send-new-log", (data) => {
+    socket.broadcast.emit("new-log", data)
+  })
+  socket.on("create-new-task", (data) => {
+    socket.broadcast.emit("new-task", data)
+  })
+  socket.on('disconnect', () =>{
     console.log('user disconnected');
   });
 })

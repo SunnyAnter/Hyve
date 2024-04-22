@@ -45,7 +45,7 @@ function Task({ task, handleProgress, handleDelete, user, socket, notifications}
           </Select>
           <ChatButton user={user} task={task} socket={socket} notifications={notifications} />
           <LogsButton logs={logs} title={task.title} />
-          <TimerButton task={task} handleProgress={handleProgress} user={user} logs={logs} setLogs={setLogs}/>
+          <TimerButton task={task} handleProgress={handleProgress} user={user} logs={logs} setLogs={setLogs} socket={socket}/>
           <CheckAndDeleteButtons task={task} handleDelete={handleDelete} handleProgress={handleProgress}/>
         </CardDescription>
       </Card>

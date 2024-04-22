@@ -50,7 +50,7 @@ function Tasks({ user, socket, notifications }) {
             </TabsList>
             <div className="flex gap-3">
               <SortButton tasks={tasks} setTasks={setTasks}/>
-              <NewTaskButton user={user} tasks={tasks} setTasks={setTasks} users={users} setUsers={setUsers} />
+              <NewTaskButton user={user} tasks={tasks} setTasks={setTasks} users={users} setUsers={setUsers} socket={socket} />
             </div>
           </div>
           <TabsContent value="all">

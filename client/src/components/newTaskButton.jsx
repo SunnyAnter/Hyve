@@ -22,19 +22,35 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@ui";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CirclePlus, CalendarRange, ChevronsUpDown } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import apiService from "@/services/apiServices";
 import moment from "moment";
 
-function NewTaskButton({user, tasks, setTasks, users, setUsers}) {
+function NewTaskButton({user, tasks, setTasks, users, setUsers, socket}) {
 
   const [date, setDate] = useState();
   const [assignees, setAssignees] = useState([]);
   const [title, setTitle] = useState("");
-
+  const [taskInputs, setNewTaskInputs] = useState(null);
   const { toast } = useToast();
+
+  useEffect(() => {
+    socket.on("new-task", (data) => {
+      setNewTaskInputs(data);
+    })
+  }, [socket]);
+
+  useEffect(() => {
+    if (taskInputs && (taskInputs.assignees.some(assignee => assignee._id === user.id))) {
+      setTasks([taskInputs, ...tasks]);
+    }
+  }, [taskInputs]);
+
+  const sendNewTask = (task) => {
+    socket.emit("create-new-task", task)
+  }
 
   const handleChange = (e) => {
     setTitle(e.target.value)
@@ -65,6 +81,7 @@ function NewTaskButton({user, tasks, setTasks, users, setUsers}) {
       logs: []
     };
     const task = await apiService.createTask(newTask);
+    sendNewTask(task)
     setTasks([task, ...tasks]);
     setUsers([...assignees, ...users]);
     setDate();
