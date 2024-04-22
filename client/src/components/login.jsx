@@ -15,6 +15,7 @@ import {
   useToast
 } from "@ui";
 import circ from '../assets/circ-logo.png';
+import Background from '../assets/logo-bg.png';
 import { useState } from "react";
 import apiService from "@/services/apiServices";
 import { Toaster } from "./ui/toaster";
@@ -119,8 +120,12 @@ export function LoginPage({ setUser }) {
   
   return (
     <>
-      <div className="w-[100vw] h-[100vh] flex justify-center items-center gap-28 bg-slate-800">
-        <img src={circ} alt="" className="h-[300px]" />
+      <div>
+        
+      </div>
+      <div className="w-[100vw] h-[100vh] flex flex-row justify-center items-center bg-slate-800">
+        <div className="flex flex-col justify-center items-center gap-4 w-[60vw]">
+        <img src={circ} alt="" className="h-[100px]" />
       <Tabs defaultValue="login" className="w-[400px]">
       <TabsList className="grid w-full grid-cols-2">
         <TabsTrigger value="sign-up">Sign-Up</TabsTrigger>
@@ -181,7 +186,10 @@ export function LoginPage({ setUser }) {
         </Card>
       </TabsContent>
         </Tabs>
-        <img src={circ} alt="" className="h-[300px]" />
+        </div>
+        <div className="bg-white h-full w-1"> 
+        </div>
+        <img src={Background} alt="" className="h-full w-[39vw]" />
         <div className="absolute">
         <Toaster/>
         </div>
