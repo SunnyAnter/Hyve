@@ -34,6 +34,7 @@ function NewTaskButton({user, tasks, setTasks, users, setUsers, socket}) {
   const [assignees, setAssignees] = useState([]);
   const [title, setTitle] = useState("");
   const [taskInputs, setNewTaskInputs] = useState(null);
+  const [open, setOpen] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -90,7 +91,7 @@ function NewTaskButton({user, tasks, setTasks, users, setUsers, socket}) {
   }
   return (
     <>    
-<Dialog>
+<Dialog open={open} onOpenChange={setOpen}>
   <DialogTrigger asChild>
     <Button className="gap-1"><CirclePlus className="h-5 w-5 ml-[-6px]" />New Task</Button>
   </DialogTrigger>
@@ -214,7 +215,7 @@ function NewTaskButton({user, tasks, setTasks, users, setUsers, socket}) {
       </div>
     </div>
     <DialogFooter>
-      <Button type="submit" onClick={handleNewTask}>Save changes</Button>
+            <Button type="submit" onClick={() => { handleNewTask(); setOpen(false)}}>Save changes</Button>
     </DialogFooter>
   </DialogContent>
 </Dialog>
