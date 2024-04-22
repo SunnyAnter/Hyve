@@ -9,7 +9,7 @@ import {
   SelectGroup,
   SelectLabel,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from "@ui";
 import moment from "moment";
 import { useState } from "react";
@@ -19,7 +19,7 @@ import TimerButton from "./timerButton";
 import ProgressBadge from "./progressBadge";
 import CheckAndDeleteButtons from "./checkAndDeleteButtons";
 
-function Task({ task, handleProgress, handleDelete, user }) {
+function Task({ task, handleProgress, handleDelete, user, socket }) {
 
   const [logs, setLogs] = useState(task.logs);
 
@@ -43,7 +43,7 @@ function Task({ task, handleProgress, handleDelete, user }) {
             </SelectGroup>
           </SelectContent>
           </Select>
-         <ChatButton user={user} task={task} />
+          <ChatButton user={user} task={task} socket={socket} />
           <LogsButton logs={logs} title={task.title} />
           <TimerButton task={task} handleProgress={handleProgress} user={user} logs={logs} setLogs={setLogs}/>
           <CheckAndDeleteButtons task={task} handleDelete={handleDelete} handleProgress={handleProgress}/>

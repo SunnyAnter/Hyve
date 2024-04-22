@@ -5,18 +5,45 @@ import {
   DialogFooter,
   DialogTrigger,
   Button,
-  Input
+  Input,
+  useToast
 } from "@ui";
 import { BadgeCheck, MessageSquareMore, Send } from 'lucide-react';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import apiService from "@/services/apiServices";
 import Message from "./messages"
 
-function ChatButton({ user, task }) {
-
+function ChatButton({ user, task, socket }) {
   const [msgs, setMsgs] = useState(task.messages);
   const [newMsg, setNewMsg] = useState('');
+  
+  const { toast } = useToast();
 
+  useEffect(() => {
+    socket.on("recieve-message", (data) => {
+      if (data.room === task._id) {
+        setMsgs([...msgs, data.msg]);
+        toast({
+          title: `${task.title}`,
+          description: `New message from ${data.msg.user.name}.`
+        })
+      }
+    })
+  })
+  useEffect(() => {
+    join();
+  }, [])
+  
+  
+  const join = () => {
+    socket.emit("join-room", task._id);
+  }
+
+  const sendMessage = (msg) => {
+    socket.emit("send-message", {msg, room:task._id})
+    setMsgs([...msgs, msg])
+    setNewMsg('');
+  }
   const handleNewMessage = async () => {
     if (newMsg.length === 0) return;
     const msg = {
@@ -25,8 +52,7 @@ function ChatButton({ user, task }) {
     }
 
     const sentMessage = await apiService.sendMessage(msg, task._id);
-    setMsgs([...msgs, sentMessage]);
-    setNewMsg('');
+    sendMessage(sentMessage);
   }
 
   const handleMsgInput = (e) => {

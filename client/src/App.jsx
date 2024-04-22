@@ -5,6 +5,9 @@ import { useState } from 'react'
 import Home from './components/home';
 import Tasks from './components/tasks';
 import Productivity from './components/productivity';
+import { io } from 'socket.io-client';
+
+const socket = io.connect('http://localhost:3000');
 
 function App() {
   const [page,setPage] = useState('home')
@@ -19,7 +22,7 @@ function App() {
             <Dashboard setPage={setPage} setUser={setUser} />
             {
               (page === 'home') ? <Home /> :
-                (page === 'tasks') ? <Tasks user={user} /> :
+                (page === 'tasks') ? <Tasks user={user} socket={socket} /> :
                   <Productivity user={user} />
             }
           </div>
