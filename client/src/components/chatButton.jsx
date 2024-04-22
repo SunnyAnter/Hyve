@@ -29,7 +29,7 @@ function ChatButton({ user, task, socket, notifications}) {
         setMsgs((prev)=>[...prev, data.msg]);
       }
     })
-  }, [notifications])
+  }, [socket])
   
   useEffect(() => {
     function scroll() {

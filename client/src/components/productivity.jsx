@@ -38,7 +38,7 @@ function Productivity({ user }) {
     if (secs >= 1) { return `${secs} secs` }
   }
   console.log(time(hour))
-  console.log(userLogs.map(log=> log.time))
+  console.log(userLogs)
   return (
     <>
       <div className='flex flex-col w-screen gap-7 justify-center items-center'>
@@ -74,7 +74,7 @@ function Productivity({ user }) {
 
               </div>
               <div className="flex flex-col h-4/5 w-16">
-                
+
               </div>
             </Card>
           </TabsContent>
