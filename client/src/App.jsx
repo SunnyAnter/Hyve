@@ -12,6 +12,7 @@ const socket = io.connect('http://localhost:3000');
 function App() {
   const [page,setPage] = useState('home')
   const [user, setUser] = useState(null);
+  const [notifications, setNotifications] = useState(true);
   return (
     <>
       {
@@ -19,10 +20,10 @@ function App() {
           <LoginPage setUser={setUser} />
           :
           <div className='flex'>
-            <Dashboard setPage={setPage} setUser={setUser} />
+            <Dashboard setPage={setPage} setUser={setUser} setNotifications={setNotifications} notifications={notifications} />
             {
               (page === 'home') ? <Home /> :
-                (page === 'tasks') ? <Tasks user={user} socket={socket} /> :
+                (page === 'tasks') ? <Tasks user={user} socket={socket} notifications={notifications}/> :
                   <Productivity user={user} />
             }
           </div>

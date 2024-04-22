@@ -19,7 +19,7 @@ import TimerButton from "./timerButton";
 import ProgressBadge from "./progressBadge";
 import CheckAndDeleteButtons from "./checkAndDeleteButtons";
 
-function Task({ task, handleProgress, handleDelete, user, socket }) {
+function Task({ task, handleProgress, handleDelete, user, socket, notifications}) {
 
   const [logs, setLogs] = useState(task.logs);
 
@@ -39,11 +39,11 @@ function Task({ task, handleProgress, handleDelete, user, socket }) {
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              {task.assignees.map((user) => <SelectLabel key={task._id}>{user.name}</SelectLabel>)}
+              {task.assignees.map((user) => <SelectLabel key={task._id +(Math.random()*1000000)}>{user.name}</SelectLabel>)}
             </SelectGroup>
           </SelectContent>
           </Select>
-          <ChatButton user={user} task={task} socket={socket} />
+          <ChatButton user={user} task={task} socket={socket} notifications={notifications} />
           <LogsButton logs={logs} title={task.title} />
           <TimerButton task={task} handleProgress={handleProgress} user={user} logs={logs} setLogs={setLogs}/>
           <CheckAndDeleteButtons task={task} handleDelete={handleDelete} handleProgress={handleProgress}/>

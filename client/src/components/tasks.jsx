@@ -11,7 +11,7 @@ import NewTaskButton from "./newTaskButton";
 import SortButton from "./sortButton";
 import FilterCard from "./filterCard";
 
-function Tasks({ user, socket }) {
+function Tasks({ user, socket, notifications }) {
 
   const [tasks, setTasks] = useState([]);
   const [users, setUsers] = useState([]);
@@ -54,19 +54,19 @@ function Tasks({ user, socket }) {
             </div>
           </div>
           <TabsContent value="all">
-            <FilterCard tasks={tasks} setTasks={setTasks} user={user} progress={null} socket={socket} />
+            <FilterCard tasks={tasks} setTasks={setTasks} user={user} progress={null} socket={socket} notifications={notifications} key={0}/>
           </TabsContent>
           <TabsContent value="start">
-            <FilterCard tasks={tasks} setTasks={setTasks} user={user} progress={0} socket={socket} />
+            <FilterCard tasks={tasks} setTasks={setTasks} user={user} progress={0} socket={socket} notifications={notifications} key={1} />
           </TabsContent>
           <TabsContent value="progress">
-            <FilterCard tasks={tasks} setTasks={setTasks} user={user} progress={1} socket={socket} />
+            <FilterCard tasks={tasks} setTasks={setTasks} user={user} progress={1} socket={socket} notifications={notifications} key={2} />
           </TabsContent>
           <TabsContent value="completed">
-            <FilterCard tasks={tasks} setTasks={setTasks} user={user} progress={2} socket={socket} />
+            <FilterCard tasks={tasks} setTasks={setTasks} user={user} progress={2} socket={socket} notifications={notifications} key={3} />
           </TabsContent>
           <TabsContent value="overdue">
-            <FilterCard tasks={tasks} setTasks={setTasks} user={user} progress={3} socket={socket} />
+            <FilterCard tasks={tasks} setTasks={setTasks} user={user} progress={3} socket={socket} notifications={notifications} key={4} />
           </TabsContent>
         </Tabs>
         <Toaster/>

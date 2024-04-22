@@ -6,7 +6,7 @@ import {
 import apiService from "@/services/apiServices";
 import Task from "./task";
 
-function FilterCard({tasks,setTasks, user, progress, socket}) {
+function FilterCard({tasks,setTasks, user, progress, socket, notifications}) {
   
   const { toast } = useToast();
 
@@ -28,10 +28,10 @@ function FilterCard({tasks,setTasks, user, progress, socket}) {
       {
         progress !== null ?
           <Card className="w-[1050px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
-            {tasks.filter(task => task.progress === progress).map((task) => <Task task={task} key={task._id} handleProgress={handleProgress} handleDelete={handleDelete} user={user} socket={socket} />)}
+            {tasks.filter(task => task.progress === progress).map((task) => <Task task={task} key={task._id} handleProgress={handleProgress} handleDelete={handleDelete} user={user} socket={socket} notifications={notifications} />)}
           </Card> :
           <Card className="w-[1050px] h-[520px] flex flex-col gap-3 justify-start items-center pt-4 overflow-scroll">
-            {tasks.map((task) => <Task task={task} key={task._id} handleProgress={handleProgress} handleDelete={handleDelete} user={user} socket={socket} />)}
+            {tasks.map((task) => <Task task={task} key={task._id} handleProgress={handleProgress} handleDelete={handleDelete} user={user} socket={socket} notifications={notifications} />)}
           </Card>
       }
     </>
