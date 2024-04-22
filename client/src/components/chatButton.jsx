@@ -18,6 +18,7 @@ function ChatButton({ user, task, socket, notifications}) {
   const messageRef = useRef(null);
   const [newMsg, setNewMsg] = useState('');
   const [newNotification, setNewNotification] = useState(null);
+  const [open, setOpen] = useState(false);
   
   const { toast } = useToast();
 
@@ -54,7 +55,7 @@ function ChatButton({ user, task, socket, notifications}) {
   }, [])
   
   function newToast(data) {
-    if (notifications) {
+    if (notifications && !open) {
       toast({
         title: `${task.title}`,
         description: `New message from ${data.user.name}.`
@@ -94,9 +95,9 @@ function ChatButton({ user, task, socket, notifications}) {
   return (
     <>
       {task.assignees.length > 1 ?
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button onClick={() => setNewNotification(null)} variant="outline" className="flex h-7 w-7 items-center justify-center rounded-md md:h-8 md:w-20 p-2 text-muted-foreground transition-cozlors hover:text-foreground">
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTrigger>
+            <Button onClick={() => { setNewNotification(null)}} variant="outline" className="flex h-7 w-7 items-center justify-center rounded-md md:h-8 md:w-20 p-2 text-muted-foreground transition-cozlors hover:text-foreground">
               <span className="p-1">Chat</span> &nbsp;{newNotification ? <MessageSquareDot size={24} color='red' /> : <MessageSquareMore size={24} />}</Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[650px]">
