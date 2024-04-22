@@ -52,8 +52,8 @@ function ChatButton({ user, task, socket, notifications}) {
   
   useEffect(() => {
     join();
-  }, [])
-  
+  }, []);
+
   function newToast(data) {
     if (notifications && !open) {
       toast({

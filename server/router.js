@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.get('/task/:id', taskControllers.getTasks);
 router.get('/users', userControllers.getUsers);
+router.get('/logs/:id', logControllers.getLogs)
 router.post('/login', userControllers.login);
 router.post('/register', userControllers.register);
 router.post('/logs/:id', logControllers.createLog);

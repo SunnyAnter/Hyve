@@ -85,5 +85,7 @@ apiService.sendMessage = (msg, id) => {
     console.log(err);
   });
 }
-
+apiService.getLogs = (id) => {
+  return fetch(rootUrl + `/logs/${id}`).then(res => res.json());
+}
 export default apiService;

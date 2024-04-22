@@ -17,7 +17,19 @@ exports.createLog = async (req, res) => {
     res.status(201);
     res.send(populatedLog);
   } catch (e) {
-    console.log('Error: parameters missing');
+    console.log(e);
+    res.status(400);
+    res.send()
+  }
+}
+
+exports.getLogs = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const userLogs = await Logs.find({ user: id });
+    res.status(200).send(userLogs)
+  } catch (e) {
+    console.log(e);
     res.status(400);
     res.send()
   }

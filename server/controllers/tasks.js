@@ -1,5 +1,5 @@
 const Tasks = require('../models/tasks');
-const Logs = require('../models/logs')
+
 exports.getTasks = async (req, res) => {
   try {
     const id = req.params.id;
