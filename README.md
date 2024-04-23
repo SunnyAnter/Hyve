@@ -7,13 +7,13 @@ make sure port 3000 and 5173 is available.
 
 from root folder
 
-cd server 
-npm i
-if you have nodemon globally installed(npm run dev)
+cd server/
+npm i/
+if you have nodemon globally installed(npm run dev)/
 otherwise (node index.js)
 
 from root folder
 
-cd client
-npm i
+cd client/
+npm i/
 npm run dev
