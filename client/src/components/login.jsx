@@ -120,10 +120,7 @@ export function LoginPage({ setUser }) {
   
   return (
     <>
-      <div>
-        
-      </div>
-      <div className="w-[100vw] h-[100vh] flex flex-row justify-center items-center bg-slate-800">
+      <div className="w-[100vw] h-[100vh] flex flex-row justify-center items-center bg-gray-800">
         <div className="flex flex-col justify-center items-center gap-4 w-[60vw]">
         <img src={circ} alt="" className="h-[100px]" />
       <Tabs defaultValue="login" className="w-[400px]">

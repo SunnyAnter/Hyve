@@ -26,7 +26,7 @@ exports.createLog = async (req, res) => {
 exports.getLogs = async (req, res) => {
   try {
     const id = req.params.id;
-    const userLogs = await Logs.find({ user: id });
+    const userLogs = await Logs.find({ user: id }).populate('user').exec();
     res.status(200).send(userLogs)
   } catch (e) {
     console.log(e);

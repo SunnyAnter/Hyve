@@ -29,7 +29,7 @@ function LogsButton({logs, title}) {
             {(logs.length === 0) ?
               <div className="w-full h-full flex justify-center items-start pt-14"><h1>No Logs Created</h1></div> :
               <>
-                {logs.map((log) => <Log key={log._id} log={log} />)}
+                {logs.sort((a,b) => b.date - a.date).map((log) => <Log key={log._id} log={log} />)}
               </>
             }
           </div>

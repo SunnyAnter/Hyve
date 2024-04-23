@@ -59,3 +59,4 @@ export {
 } from './dialog'
 export { ToastProvider, ToastViewport, Toast, ToastTitle, ToastDescription, ToastClose, ToastAction } from './toast'
 export { useToast, toast } from './use-toast'
+export { HoverCard, HoverCardTrigger, HoverCardContent } from './hover-card';

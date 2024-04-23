@@ -63,10 +63,10 @@ function Tasks({ user, socket, notifications }) {
             <FilterCard tasks={tasks} setTasks={setTasks} user={user} progress={1} socket={socket} notifications={notifications} key={2} />
           </TabsContent>
           <TabsContent value="completed">
-            <FilterCard tasks={tasks} setTasks={setTasks} user={user} progress={2} socket={socket} notifications={notifications} key={3} />
+            <FilterCard tasks={tasks} setTasks={setTasks} user={user} progress={3} socket={socket} notifications={notifications} key={3} />
           </TabsContent>
           <TabsContent value="overdue">
-            <FilterCard tasks={tasks} setTasks={setTasks} user={user} progress={3} socket={socket} notifications={notifications} key={4} />
+            <FilterCard tasks={tasks} setTasks={setTasks} user={user} progress={2} socket={socket} notifications={notifications} key={4} />
           </TabsContent>
         </Tabs>
         <Toaster/>

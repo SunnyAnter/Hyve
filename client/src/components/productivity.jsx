@@ -1,6 +1,14 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 import apiService from "@/services/apiServices";
+import { Palette } from "lucide-react";
 import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
   Button,
   Card,
   CardContent,
@@ -14,22 +22,53 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-  useToast
+  useToast,
 } from "@ui";
-import { Car } from "lucide-react";
+import TableBar from "./tableBar";
 
 function Productivity({ user }) {
+  const [colorState, setColorState] = useState("cyan");
   const [userLogs, setUserLogs] = useState([]);
-  const hour = 3600000;
+
   useEffect(() => {
     const getUserLogs = async () => {
       const logs = await apiService.getLogs(user.id);
       setUserLogs(logs);
-    }
+    };
     getUserLogs();
-  }, [])
+  }, []);
+  const handleSort = (sortBy) => {
+    switch (sortBy) {
+      case "cyan":
+        setColorState("cyan");
+        break;
+      case "teal":
+        setColorState("teal");
+        break;
+      case "rose":
+        setColorState("rose");
+        break;
+      case "violet":
+        setColorState("violet");
+        break;
+      case "orange":
+        setColorState("orange");
+        break;
+      default:
+        break;
+    }
+  };
+
   function getDayOfWeek(timestamp) {
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const days = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
     const date = new Date(timestamp);
     return days[date.getDay()];
   }
@@ -50,118 +89,91 @@ function Productivity({ user }) {
 
   function filterMessagesForCurrentWeekAndDay(day) {
     const [startOfWeek, endOfWeek] = getCurrentWeekRange();
-    return userLogs.filter(message => {
+    const fileteredLogs = userLogs.filter((message) => {
       const messageDay = getDayOfWeek(message.date);
-      return messageDay === day && message.date >= startOfWeek && message.date <= endOfWeek;
+      return (
+        messageDay === day &&
+        message.date >= startOfWeek &&
+        message.date <= endOfWeek
+      );
     });
+    return fileteredLogs;
   }
 
-  const mondayMessages = filterMessagesForCurrentWeekAndDay('Monday');
-  console.log("Monday Messages for Current Week:", mondayMessages);
-  const time = (t) => {
-    const secs = Math.round(t / 1000);
-    const mins = Math.round(secs / 60);
-    const hours = Math.round(mins / 60);
-    const days = Math.round(hours / 24);
-    if (days >= 1) { return days === 1 ? `${days} day` : `${days} days` }
-    if (hours >= 1) { return hours === 1 ? `${hours} hour` : `${hours} hours` }
-    if (mins >= 1) { return mins === 1 ? `${mins} min` : `${mins} mins` }
-    if (secs >= 1) { return `${secs} secs` }
-  }
-  console.log(time(hour))
-  console.log(userLogs)
   return (
     <>
-      <div className='flex flex-col w-screen gap-7 justify-center items-center'>
-        <Tabs defaultValue="day" className="w-[1050px]">
+      <div className="flex flex-col w-screen gap-7 justify-center items-center">
+        <Tabs defaultValue="week" className="w-[1050px]">
           <div className="flex w-[1050px] justify-between">
             <TabsList>
-              <TabsTrigger value="day">Day</TabsTrigger>
               <TabsTrigger value="week">Week</TabsTrigger>
+              <TabsTrigger value="day">Day</TabsTrigger>
             </TabsList>
+            <Select onValueChange={handleSort}>
+              <SelectTrigger className=" bg-slate-200 text-black hover:bg-slate-300 gap-1 w-32">
+                <Palette className="h-5 w-5 ml-[-6px]" />
+                <SelectValue placeholder="Pick Style" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Pick Style</SelectLabel>
+                  <SelectItem value="cyan">Cyan</SelectItem>
+                  <SelectItem value="teal">Teal</SelectItem>
+                  <SelectItem value="rose">Rose</SelectItem>
+                  <SelectItem value="violet">Violet</SelectItem>
+                  <SelectItem value="orange">Orange</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
           <TabsContent value="day">
-            <Card className="w-[1050px] h-[520px] flex flex-col gap-3 justify-start items-center overflow-scroll">
+            <Card className="w-[1050px] h-[520px] flex flex-col gap-3 justify-center items-center overflow-scroll">
+              Coming Soon.
             </Card>
           </TabsContent>
           <TabsContent value="week">
             <Card className="w-[1050px] h-[520px] flex justify-evenly items-center pl-16 pr-16">
-              <div className="h-4/5 w-28 flex flex-col justify-end">
-                <Card className="h-56">
-                  <div className="w-full bg-cyan-500 h-full rounded-xl">
-                  </div>
-                </Card>
-                <div className="h-12 flex justify-center items-center flex-col">
-                  <CardTitle>Monday</CardTitle>
-                  <CardDescription>Apr 22th, 24</CardDescription>
-                </div>
-              </div>
-              <div className="h-4/5 w-28 flex flex-col justify-end">
-                <Card className="h-96">
-                  <div className="w-full bg-cyan-500 h-full rounded-xl">
-                  </div>
-                </Card>
-                <div className="h-12 flex justify-center items-center flex-col">
-                  <CardTitle>Tuesday</CardTitle>
-                  <CardDescription>Apr 23th, 24</CardDescription>
-                </div>
-              </div>
-              <div className="h-4/5 w-28 flex flex-col justify-end">
-                <Card className="h-32">
-                  <div className="w-full bg-cyan-500 h-full rounded-xl">
-                  </div>
-                </Card>
-                <div className="h-12 flex justify-center items-center flex-col">
-                  <CardTitle>Wednesday</CardTitle>
-                  <CardDescription>Apr 24th, 24</CardDescription>
-                </div>
-              </div>
-              <div className="h-4/5 w-28 flex flex-col justify-end">
-                <Card className="h-3/5">
-                  <div className="w-full bg-cyan-500 h-full rounded-xl">
-                  </div>
-                </Card>
-                <div className="h-12 flex justify-center items-center flex-col">
-                  <CardTitle>Thursday</CardTitle>
-                  <CardDescription>Apr 25th, 24</CardDescription>
-                </div>
-              </div>
-              <div className="h-4/5 w-28 flex flex-col justify-end">
-                <Card className="h-2/5">
-                  <div className="w-full bg-cyan-500 h-full rounded-xl">
-                  </div>
-                </Card>
-                <div className="h-12 flex justify-center items-center flex-col">
-                  <CardTitle>Friday</CardTitle>
-                  <CardDescription>Apr 26th, 24</CardDescription>
-                </div>
-              </div>
-              <div className="h-4/5 w-28 flex flex-col justify-end">
-                <Card className="h-4/5">
-                  <div className="w-full bg-cyan-500 h-full rounded-xl">
-                  </div>
-                </Card>
-                <div className="h-12 flex justify-center items-center flex-col">
-                  <CardTitle>Saturday</CardTitle>
-                  <CardDescription>Apr 27th, 24</CardDescription>
-                </div>
-              </div>
-              <div className="h-4/5 w-28 flex flex-col justify-end">
-                <Card className="h-3/5">
-                  <div className="w-full bg-cyan-500 h-full rounded-xl">
-                  </div>
-                </Card>
-                <div className="h-12 flex justify-center items-center flex-col">
-                  <CardTitle>Sunday</CardTitle>
-                  <CardDescription>Apr 28th, 24</CardDescription>
-                </div>
-              </div>
+              <TableBar
+                day={"Monday"}
+                logs={filterMessagesForCurrentWeekAndDay("Monday")}
+                colorState={colorState}
+              />
+              <TableBar
+                day={"Tuesday"}
+                logs={filterMessagesForCurrentWeekAndDay("Tuesday")}
+                colorState={colorState}
+              />
+              <TableBar
+                day={"Wednesday"}
+                logs={filterMessagesForCurrentWeekAndDay("Wednesday")}
+                colorState={colorState}
+              />
+              <TableBar
+                day={"Thursday"}
+                logs={filterMessagesForCurrentWeekAndDay("Thurday")}
+                colorState={colorState}
+              />
+              <TableBar
+                day={"Friday"}
+                logs={filterMessagesForCurrentWeekAndDay("Friday")}
+                colorState={colorState}
+              />
+              <TableBar
+                day={"Saturday"}
+                logs={filterMessagesForCurrentWeekAndDay("Saturday")}
+                colorState={colorState}
+              />
+              <TableBar
+                day={"Sunday"}
+                logs={filterMessagesForCurrentWeekAndDay("Sunday")}
+                colorState={colorState}
+              />
             </Card>
           </TabsContent>
         </Tabs>
       </div>
     </>
-  )
+  );
 }
 
-export default Productivity
+export default Productivity;
