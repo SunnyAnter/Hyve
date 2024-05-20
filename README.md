@@ -1,9 +1,13 @@
 
-#  Hyve is a task management app that uses socket.io to interact between clients.
+#  Hyve 
+
+This project uses Socket.IO to facilitate real-time interaction between clients, ensuring everyone stays updated instantly. With the user-friendly interface created using Shadcn.
 
 ## Getting Started
 
 First, make sure you have installed nodemon globally and mongodb on your computer:
+
+Then simply fork this repository and clone it to your computer
 
 From Root Folder:
 
