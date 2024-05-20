@@ -1,19 +1,55 @@
-Hyve is a task management app that uses socket.io to interact between clients.
 
-To run the app
+#  Hyve is a task management app that uses socket.io to interact between clients.
 
-you need to have mongodb installed on your computer.
-make sure port 3000 and 5173 is available.
+## Getting Started
 
-from root folder
+First, make sure you have installed nodemon globally and mongodb on your computer:
 
-cd server/
-npm i/
-if you have nodemon globally installed(npm run dev)/
-otherwise (node index.js)
+From Root Folder:
 
-from root folder
+### Server Side
 
-cd client/
-npm i/
+First
+
+```bash
+cd server
+```
+then 
+
+```bash
+npm i
+```
+If you have nodemon installed
+```bash
 npm run dev
+```
+else
+```bash
+node index.js
+```
+Open another window on command line
+
+From Root Folder:
+
+### Client Side
+
+First 
+
+```bash
+cd client
+```
+Then
+
+```bash
+npm i
+```
+
+Then
+
+```bash
+npm run dev
+```
+
+## You're all set!!
+
+Now all you have to do is open [http://localhost:5173](http://localhost:5173) on your browser to see the result.
