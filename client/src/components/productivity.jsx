@@ -9,20 +9,11 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-  Button,
   Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-  Input,
-  Label,
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-  useToast,
 } from "@ui";
 import TableBar from "./tableBar";
 
